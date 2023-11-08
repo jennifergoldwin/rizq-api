@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restapi.rizqnasionalwebsite.entity.InvestmentGrowth;
 import com.restapi.rizqnasionalwebsite.entity.Portfolio;
 import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
 import com.restapi.rizqnasionalwebsite.mapper.PortfolioMapper;
@@ -20,5 +21,9 @@ public class PortfolioService {
 
     public List<StockPurchased> getStockPurchasedByIdentityNumber(String identityNumber){
         return portfolioMapper.getUserAssetStock(identityNumber);
+    }
+
+    public List<InvestmentGrowth> getInvestmentGrowthsByIdentityNumber(String identityNumber){
+        return portfolioMapper.getUserInvestmentGrowths(identityNumber);
     }
 }

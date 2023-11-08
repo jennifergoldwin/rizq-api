@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RizqNasionalWebsiteApplication<rizq-nasional-website>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.restapi.rizqnasionalwebsite.RizqNasionalWebsiteApplication",
+            "projectName": "rizq-nasional-website",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

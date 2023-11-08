@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
-import com.restapi.rizqnasionalwebsite.entity.JwtResponse;
+import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
@@ -38,13 +39,13 @@ public class AuthenticationController {
             // Check if the user with the provided identityNumber already exists
             User existingUser = userService.getUserByIdentityNumber(user.getIdentityNumber());
             if (existingUser != null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User with this identity number already exists");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new CommonResponse<>(true,"User with this identity number already exists",null));
             }
             userService.registerUser(user);
-            return ResponseEntity.ok("Registration successful");
+            return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResponse<>(false,"User created",null));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Registration failed");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }
     }
 
@@ -52,14 +53,17 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticateUser(@RequestBody AuthRequest authRequest) {
         try {
             User user = userService.getUserByIdentityNumber(authRequest.getIdentityNumber());
-            if (user == null || !passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid identityNumber or password");
+            if (user == null){
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true, "Invalid identity number", null));
+            }
+            else if (!passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true, "Invalid password", null));
             }
 
             String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
-            return ResponseEntity.ok(new JwtResponse(jwt));
+            return ResponseEntity.ok(new CommonResponse<>(false,"success",new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName())));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Authentication failed");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true,e.getLocalizedMessage(),null));
         }
     }
 }

@@ -8,14 +8,13 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
+import com.restapi.rizqnasionalwebsite.entity.InvestmentGrowth;
 import com.restapi.rizqnasionalwebsite.entity.Portfolio;
 import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
 
 @Mapper
 public interface PortfolioMapper {
     @Select("SELECT " +
-            "u.identityNumber AS user_identity, " +
-            "u.fullName AS user_fullname, " +
             "COUNT(DISTINCT sh.stockId) AS total_investment, " +
             "SUM(sh.purchasedPrice) AS total_deposit, " +
             "SUM(sh.currPrice - sh.purchasedPrice) AS total_profit " +
@@ -32,8 +31,6 @@ public interface PortfolioMapper {
             "WHERE u.identityNumber = #{identityNumber} "+
             "GROUP BY u.identityNumber, u.fullName")
     @Results({
-        @Result(property = "user_identity", column = "user_identity"),
-        @Result(property = "user_fullname", column = "user_fullname"),
         @Result(property = "total_investment", column = "total_investment"),
         @Result(property = "total_deposit", column = "total_deposit"),
         @Result(property = "total_profit", column = "total_profit")
@@ -54,5 +51,13 @@ public interface PortfolioMapper {
         @Result(property = "totalPurchasedPrice", column = "totalPurchasedPrice")
     })
     List<StockPurchased> getUserAssetStock(String identityNumber);
+
+
+    @Select("SELECT DATE_FORMAT(sh.purchasedDate, '%Y-%m') AS month, SUM(s.currPrice - sh.purchasedPrice) AS growth FROM users u INNER JOIN stockHolding sh ON u.identityNumber = sh.userIdentityNumber INNER JOIN stocks s ON sh.stockId = s.id WHERE u.identityNumber =  #{identityNumber} GROUP BY Month ORDER BY Month")
+    @Results({
+        @Result(property = "month", column = "month"),
+        @Result(property = "growth", column = "growth"),
+    })
+    List<InvestmentGrowth> getUserInvestmentGrowths(String identityNumber);
 
 }

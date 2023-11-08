@@ -10,4 +10,5 @@ import lombok.Data;
 public class PortfolioResponse {
     private Portfolio portfolio;
     private List<StockPurchased> stockAllocation;
+    private List<InvestmentGrowth> investmentGrowth;
 }

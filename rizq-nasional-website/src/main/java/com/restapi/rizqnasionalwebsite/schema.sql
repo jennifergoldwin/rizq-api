@@ -32,5 +32,12 @@ CREATE TABLE IF NOT EXISTS `stockHolding` (
     FOREIGN KEY (`stockId`) REFERENCES `stocks`(`id`)
 )
 
+CREATE TABLE IF NOT EXISTS `stockHolding` (
+    `id` VARCHAR(100) PRIMARY KEY,
+    `userIdentityNumber` VARCHAR(100) NOT NULL,
+    `stockId` VARCHAR(100) NOT NULL,
+    `purchasedPrice` INTEGER NOT NULL,
+    `purchasedDate` DATE NOT NULL,
+)
 
 -- SELECT u.fullName AS UserName, sh.userIdentityNumber AS UserID, DATE_FORMAT(sh.purchasedDate, '%Y-%m') AS Month, SUM(s.currPrice - sh.purchasedPrice) AS InvestmentGrowth FROM users u INNER JOIN stockHolding sh ON u.identityNumber = sh.userIdentityNumber INNER JOIN stocks s ON sh.stockId = s.id GROUP BY UserName, UserID, Month ORDER BY UserName, Month; 
