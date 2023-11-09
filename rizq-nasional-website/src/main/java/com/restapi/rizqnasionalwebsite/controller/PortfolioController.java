@@ -38,9 +38,6 @@ public class PortfolioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPortfolioUser(@PathVariable String id,@RequestHeader("Authorization") String bearerToken) {
         try {
-            
-            
-
             User user = userService.getUserByIdentityNumber(id);
             if (user == null){
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true,"Invalid identity number",null));

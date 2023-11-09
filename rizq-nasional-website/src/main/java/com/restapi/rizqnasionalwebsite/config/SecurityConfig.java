@@ -10,19 +10,24 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.restapi.rizqnasionalwebsite.filter.JwtAuthFilter;
+import com.restapi.rizqnasionalwebsite.security.JwtAuthEntryPoint;
+import com.restapi.rizqnasionalwebsite.security.JwtAuthFilter;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private JwtAuthEntryPoint unauthorizedHandler;
 
     @Autowired
     private JwtAuthFilter authFilter; 
@@ -37,9 +42,12 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
         return http.csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/api/v1/auth/register", "/api/v1/auth/login","/api/v1/auth/welcome").permitAll() // Allow registration and login without authentication
-        .anyRequest().authenticated())
+        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth ->
+        auth.requestMatchers("/api/v1/auth/**").permitAll() // Allow registration and login without authentication
+        .anyRequest().authenticated()
+        ).authenticationProvider(authenticationProvider())
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
     } 
   

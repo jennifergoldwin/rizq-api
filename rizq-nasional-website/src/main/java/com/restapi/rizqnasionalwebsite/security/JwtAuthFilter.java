@@ -1,4 +1,4 @@
-package com.restapi.rizqnasionalwebsite.filter;
+package com.restapi.rizqnasionalwebsite.security;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +26,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         try {
             String token = extractToken(request);
 
-            if (token != null && jwtService.validateToken(token)) {
-                String identityNumber = jwtService.extractIdentityNumber(token);
+            if (token != null && jwtService.validateJwtToken(token)) {
+                String identityNumber = jwtService.getIdentityNumberFromJwtToken(token);
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(identityNumber, null, null);
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
