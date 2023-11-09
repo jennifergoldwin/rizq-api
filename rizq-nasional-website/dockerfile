@@ -1,0 +1,5 @@
+FROM openjdk:11-jre-slim
+WORKDIR /app
+COPY target/rizq-nasional-website.jar /app
+# EXPOSE 8080
+CMD ["java", "-jar", "rizq-nasional-website.jar.jar"]

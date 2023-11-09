@@ -45,7 +45,7 @@ public class SecurityConfig {
         .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth ->
-        auth.requestMatchers("/api/v1/auth/**").permitAll() // Allow registration and login without authentication
+        auth.requestMatchers("/api/v1/auth/login","/api/v1/auth/register").permitAll() // Allow registration and login without authentication
         .anyRequest().authenticated()
         ).authenticationProvider(authenticationProvider())
         .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
