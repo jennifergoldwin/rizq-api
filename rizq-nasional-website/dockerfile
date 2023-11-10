@@ -1,5 +1,8 @@
-FROM openjdk:11-jre-slim
+FROM eclipse-temurin:17-jdk-alpine
+RUN mkdir -p /app /docker-entrypoint-initdb.d
+ADD resources/schema.sql /docker-entrypoint-initdb.d/
 WORKDIR /app
-COPY target/rizq-nasional-website.jar /app
-# EXPOSE 8080
-CMD ["java", "-jar", "rizq-nasional-website.jar.jar"]
+COPY target/rizq-nasional-website-0.0.1-SNAPSHOT.jar /app
+EXPOSE 8080
+CMD ["java", "-jar", "rizq-nasional-website-0.0.1-SNAPSHOT.jar"]
+
