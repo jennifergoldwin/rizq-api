@@ -6,7 +6,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-@EnableWebMvc
 public class CorsConfig implements WebMvcConfigurer {
 
     public CorsConfig() {
@@ -17,9 +16,9 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         System.out.println("Registry is being created");
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000"); // You can specify specific origins instead of "*"
-                // .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                // .allowedHeaders("*")
+                .allowedOrigins("http://localhost:3000") // You can specify specific origins instead of "*"
+                .allowedMethods("*")
+                .allowedHeaders("*");
                 // .allowCredentials(true)
                 // .maxAge(3600);
     }

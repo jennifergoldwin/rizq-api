@@ -40,7 +40,7 @@ public class AuthenticationController {
     // } 
     // @RequestMapping(method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE, params = )
     @GetMapping("/user/{id}")
-    public ResponseEntity<?> getUserInfo(@PathVariable String id, @RequestHeader("Authorization") String bearerToken){
+    public ResponseEntity<?> getUserInfo(@PathVariable String id){
         try {
             User user = userService.getUserByIdentityNumber(id);
             if (user == null){
