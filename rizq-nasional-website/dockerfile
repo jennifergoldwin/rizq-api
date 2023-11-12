@@ -4,11 +4,12 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY target/rizq-nasional-website-0.0.1-SNAPSHOT.jar /app
 
-COPY wait-for-it.sh /wait-for-it.sh
-RUN chmod +x /wait-for-it.sh
+# COPY wait-for-it.sh /wait-for-it.sh
+# RUN chmod +x /wait-for-it.sh
 
 COPY docker-scripts/init.sql /docker-entrypoint-initdb.d/
 
 EXPOSE 8080
-CMD ["/wait-for-it.sh","mysql:3306","--timeout=30","--","java", "-jar", "rizq-nasional-website-0.0.1-SNAPSHOT.jar"]
+# CMD ["/wait-for-it.sh","mysql:3306","--timeout=30","--","java", "-jar", "rizq-nasional-website-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "rizq-nasional-website-0.0.1-SNAPSHOT.jar"]
 
