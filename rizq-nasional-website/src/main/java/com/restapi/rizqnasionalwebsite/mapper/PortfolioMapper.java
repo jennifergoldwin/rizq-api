@@ -24,11 +24,14 @@ public interface PortfolioMapper {
             "       sh1.userIdentityNumber, " +
             "       sh1.stockId, " +
             "       sh1.purchasedPrice, " +
-            "       s.currPrice " +
+            "       s.currPrice, " +
+            "       it.statusWithdrawal " +
             "   FROM stockHolding sh1 " +
             "   LEFT JOIN stocks s ON sh1.stockId = s.id " +
+            "   LEFT JOIN investment_table it ON sh1.investmentId = it.code " +
             ") sh ON u.identityNumber = sh.userIdentityNumber " +
-            "WHERE u.identityNumber = #{identityNumber} "+
+            "WHERE u.identityNumber = #{identityNumber} " +
+            "AND sh.statusWithdrawal = 'false' " +
             "GROUP BY u.identityNumber, u.fullName")
     @Results({
         @Result(property = "total_investment", column = "total_investment"),
