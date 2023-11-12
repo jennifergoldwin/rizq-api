@@ -11,5 +11,4 @@ public class RizqNasionalWebsiteApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(RizqNasionalWebsiteApplication.class, args);
 	}
-
 }
