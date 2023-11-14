@@ -28,7 +28,7 @@ public interface PortfolioMapper {
             "       it.statusWithdrawal " +
             "   FROM stockHolding sh1 " +
             "   LEFT JOIN stocks s ON sh1.stockId = s.id " +
-            "   LEFT JOIN investment_table it ON sh1.investmentId = it.code " +
+            "   LEFT JOIN investment it ON sh1.investmentId = it.code " +
             ") sh ON u.identityNumber = sh.userIdentityNumber " +
             "WHERE u.identityNumber = #{identityNumber} " +
             "AND sh.statusWithdrawal = 'false' " +

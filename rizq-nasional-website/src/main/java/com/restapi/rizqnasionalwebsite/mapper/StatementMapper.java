@@ -2,12 +2,15 @@ package com.restapi.rizqnasionalwebsite.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.restapi.rizqnasionalwebsite.entity.Statement;
+import com.restapi.rizqnasionalwebsite.entity.StockHolding;
 
 @Mapper
 public interface StatementMapper {
@@ -35,4 +38,21 @@ public interface StatementMapper {
         @Result(property = "statusWithdrawal", column = "statusWithdrawal"),
     })
     List<Statement> getUserStatement(String identityNumber);
+
+
+    @Insert("INSERT INTO investment(id, userIdentityNumber, date, dateWithdrawl, planId, amount, statusPlan, statusWithdrawal) VALUES(#{id}, #{userIdentityNumber},#{date}, #{dateWithdrawl}, #{planId}, #{amount}, #{statusPlan}, #{statusWithdrawal})")
+    void saveStatement(Statement statement);
+
+    @Select("SELECT * FROM investment")
+    List<Statement> getAllStatements();
+
+
+    @Select("SELECT * FROM stockholding")
+    List<StockHolding> getAllHolding();
+
+    @Insert("INSERT INTO stockholding(id, userIdentityNumber, investmentId, stockId, purchasedPrice, value, purchasedDate) VALUES(#{id}, #{userIdentityNumber},#{investmentId}, #{stockId}, #{purchasedPrice}, #{value}, #{purchasedDate})")
+    void saveHolding(StockHolding stockHolding);
+
+    @Update("UPDATE investment SET statusWithdrawal = #{statusWithdrawal} WHERE id = #{id}")
+    void updateStatusWithdrawal(Statement statement);
 }

@@ -20,7 +20,7 @@ CREATE DATABASE IF NOT EXISTS `rizq_nasional` /*!40100 DEFAULT CHARACTER SET lat
 USE `rizq_nasional`;
 
 -- Dumping structure for table rizq_nasional.investment_table
-CREATE TABLE IF NOT EXISTS `investment_table` (
+CREATE TABLE IF NOT EXISTS `investment` (
   `id` varchar(10) NOT NULL,
   `userIdentityNumber` varchar(20) NOT NULL,
   `date` date NOT NULL,
@@ -32,28 +32,14 @@ CREATE TABLE IF NOT EXISTS `investment_table` (
   PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table rizq_nasional.investment_table: ~12 rows (approximately)
--- INSERT INTO `investment_table` (`code`, `userIdentityNumber`, `date`, `tenure`, `plan`, `interest`, `amount`, `statusPlan`, `statusWithdrawal`) VALUES
--- 	('INV001', '123456789', '2023-10-21', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
--- 	('INV003', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false'),
--- 	('INV004', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
--- 	('INV005', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'true'),
--- 	('INV006', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
--- 	('INV007', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
--- 	('INV008', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
--- 	('INV009', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
--- 	('INV010', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
--- 	('INV011', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
--- 	('INV012', '123456789', '2023-10-22', 100, 'Premium', 5.50, 500.00, 'On Going', 'false'),
--- 	('INV002', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false');
-
 -- Dumping structure for table rizq_nasional.stockholding
 CREATE TABLE IF NOT EXISTS `stockholding` (
   `id` varchar(100) NOT NULL,
   `userIdentityNumber` varchar(100) NOT NULL,
-  `stockId` varchar(100) NOT NULL,
   `investmentId` varchar(100) NOT NULL,
+  `stockId` varchar(100) NOT NULL,
   `purchasedPrice` int(11) NOT NULL,
+  `value` int(11) NOT NULL,
   `purchasedDate` date NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -120,9 +106,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table rizq_nasional.users: ~2 rows (approximately)
-INSERT INTO `users` (`id`, `fullName`, `identityNumber`, `phoneNumber`, `email`, `state`, `city`, `address`, `postCode`, `occupation`, `bankName`, `bankAccountNumber`, `bankHolderName`, `password`, `role`) VALUES
-	(1, 'Jessica', '123456789', '+6281377036883', 'jessica@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$VgCfGHKo6i572GeEA069Rerh1o3g3wlbDDa6bt4uoNUIIDFEyQ/Je', 'ROLE_USER'),
-	(2, 'Sandra', '111111111', '+6281377036883', 'sandra@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$9AegNOqMV2DOghGoDCFlp.iY28ibZC.fYV8Yi6gWwzfQksmpVMz9y', 'ROLE_USER');
+-- INSERT INTO `users` (`id`, `fullName`, `identityNumber`, `phoneNumber`, `email`, `state`, `city`, `address`, `postCode`, `occupation`, `bankName`, `bankAccountNumber`, `bankHolderName`, `password`, `role`) VALUES
+-- 	(1, 'Jessica', '123456789', '+6281377036883', 'jessica@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$VgCfGHKo6i572GeEA069Rerh1o3g3wlbDDa6bt4uoNUIIDFEyQ/Je', 'ROLE_USER'),
+-- 	(2, 'Sandra', '111111111', '+6281377036883', 'sandra@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$9AegNOqMV2DOghGoDCFlp.iY28ibZC.fYV8Yi6gWwzfQksmpVMz9y', 'ROLE_USER');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

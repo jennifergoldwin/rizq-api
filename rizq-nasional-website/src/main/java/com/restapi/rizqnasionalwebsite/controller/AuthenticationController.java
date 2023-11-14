@@ -1,5 +1,7 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
+import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
+import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
@@ -55,6 +59,18 @@ public class AuthenticationController {
         }
     }
 
+    @GetMapping("/listadmin/{username}")
+     public ResponseEntity<?> getListAdmin(@PathVariable String username) {
+        try {
+            List<Admin> list = adminService.getAdminByCreatedBy(username);
+            
+            return ResponseEntity.ok(new CommonResponse<>(false, "success", list));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     @PostMapping("/register-admin")
     public ResponseEntity<?> registerAdmin(@RequestBody Admin admin){
         try {
@@ -63,9 +79,9 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new CommonResponse<>(true, "Username already exists", null));
             }
-            adminService.registerAdmin(admin);
+            List<Admin> list = adminService.registerAdmin(admin, admin.getCreatedby());
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Admin created", null));
+            .body(new CommonResponse<>(false, "Admin created", list));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -114,9 +130,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login-admin")
-    public ResponseEntity<?> authenticateAdmin(@RequestBody AuthRequest authRequest){
+    public ResponseEntity<?> authenticateAdmin(@RequestBody AuthAdminRequest authRequest){
         try {
-            Admin admin = adminService.getAdminByUsername(authRequest.getIdentityNumber());
+            Admin admin = adminService.getAdminByUsername(authRequest.getUsername());
             if (admin == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new CommonResponse<>(true, "Invalid username", null));
@@ -124,9 +140,9 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(new CommonResponse<>(true, "Invalid password", null));
             }
-            String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
+            String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getUsername());
             return ResponseEntity.ok(new CommonResponse<>(false, "success",
-                    new AuthResponse(jwt, admin.getUsername(), admin.getFullName(),admin.getRole())));
+                    new AuthAdminResponse(jwt, admin.getUsername(), admin.getFullName(),admin.getRole())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));

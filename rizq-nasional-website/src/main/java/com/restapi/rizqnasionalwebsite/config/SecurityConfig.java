@@ -60,7 +60,7 @@ public class SecurityConfig {
                             "/api/v1/auth/login-admin", 
                             "/api/v1/auth/register",
                             "/api/v1/auth/register-admin").permitAll() // Allow registration and login without authentication
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 ).authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
     } 

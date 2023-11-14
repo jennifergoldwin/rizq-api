@@ -1,5 +1,6 @@
 package com.restapi.rizqnasionalwebsite.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class AdminService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder encoder; 
 
-	public Admin registerAdmin(Admin admin) {
+	public List<Admin> registerAdmin(Admin admin,String username) {
         // Hash the password before saving to the database
         String hashedPassword = encoder.encode(admin.getPassword());
         admin.setPassword(hashedPassword);
@@ -30,11 +31,11 @@ public class AdminService implements UserDetailsService {
         // Save the user to the database
         adminMapper.save(admin);
 
-        return admin;
+        return adminMapper.findByCreatedBy(username);
     }
 
-    public Admin getAdminByCreatedBy(String username) {
-        return adminMapper.findByCreatedBy(username).orElse(null);
+    public List<Admin> getAdminByCreatedBy(String username) {
+        return adminMapper.findByCreatedBy(username);
     }
 
     public Admin getAdminByUsername(String username) {

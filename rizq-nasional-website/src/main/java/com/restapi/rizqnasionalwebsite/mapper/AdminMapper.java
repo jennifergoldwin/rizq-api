@@ -1,5 +1,6 @@
 package com.restapi.rizqnasionalwebsite.mapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.ibatis.annotations.Insert;
@@ -17,7 +18,7 @@ public interface AdminMapper {
     Optional<Admin> findByUsername(String username);
 
     @Select("SELECT * FROM admins WHERE createdby = #{username}")
-    Optional<Admin> findByCreatedBy(String username);
+    List<Admin> findByCreatedBy(String username);
     
     @Insert("INSERT INTO admins(fullName, username, password, role, createdby) VALUES(#{fullName}, #{username},#{password}, #{role}, #{createdby})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
