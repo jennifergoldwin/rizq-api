@@ -16,7 +16,6 @@ import com.restapi.rizqnasionalwebsite.entity.Portfolio;
 import com.restapi.rizqnasionalwebsite.entity.PortfolioResponse;
 import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
 import com.restapi.rizqnasionalwebsite.entity.User;
-import com.restapi.rizqnasionalwebsite.service.JwtService;
 import com.restapi.rizqnasionalwebsite.service.PortfolioService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 

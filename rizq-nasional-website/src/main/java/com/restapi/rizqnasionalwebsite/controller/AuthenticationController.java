@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
+import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
@@ -28,14 +30,16 @@ public class AuthenticationController {
     private UserService userService;
 
     @Autowired
+    private AdminService adminService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // @GetMapping("/welcome")
-    // public String welcome() {
-    // return "Welcome this endpoint is not secure";
-    // }
-    // @RequestMapping(method = RequestMethod.GET, consumes =
-    // MediaType.APPLICATION_JSON_VALUE, params = )
+    @GetMapping("/welcome")
+    public String welcome() {
+    return "Welcome this endpoint is not secure";
+    }
+    
     @GetMapping("/user/{id}")
     public ResponseEntity<?> getUserInfo(@PathVariable String id) {
         try {
@@ -51,6 +55,24 @@ public class AuthenticationController {
         }
     }
 
+    @PostMapping("/register-admin")
+    public ResponseEntity<?> registerAdmin(@RequestBody Admin admin){
+        try {
+            Admin existingAdmin = adminService.getAdminByUsername(admin.getUsername());
+            if (existingAdmin!=null){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new CommonResponse<>(true, "Username already exists", null));
+            }
+            adminService.registerAdmin(admin);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Admin created", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         try {
@@ -61,7 +83,8 @@ public class AuthenticationController {
                         .body(new CommonResponse<>(true, "User with this identity number already exists", null));
             }
             userService.registerUser(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(new CommonResponse<>(false, "User created", null));
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "User created", null));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -83,7 +106,27 @@ public class AuthenticationController {
 
             String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
             return ResponseEntity.ok(new CommonResponse<>(false, "success",
-                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName())));
+                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName(),user.getRole())));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PostMapping("/login-admin")
+    public ResponseEntity<?> authenticateAdmin(@RequestBody AuthRequest authRequest){
+        try {
+            Admin admin = adminService.getAdminByUsername(authRequest.getIdentityNumber());
+            if (admin == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new CommonResponse<>(true, "Invalid username", null));
+            } else if (!passwordEncoder.matches(authRequest.getPassword(), admin.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new CommonResponse<>(true, "Invalid password", null));
+            }
+            String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
+            return ResponseEntity.ok(new CommonResponse<>(false, "success",
+                    new AuthResponse(jwt, admin.getUsername(), admin.getFullName(),admin.getRole())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));

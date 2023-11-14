@@ -25,6 +25,7 @@ public class User {
     private String bankHolderName;
     private String password;  
     private String role;
+    private String createdby;
 }
 
 

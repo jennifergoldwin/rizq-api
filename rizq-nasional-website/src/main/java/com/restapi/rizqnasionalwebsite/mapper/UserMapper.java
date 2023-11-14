@@ -14,7 +14,10 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE identityNumber = #{identityNumber}")
     Optional<User> findByIdentityNumber(String identityNumber);
 
-    @Insert("INSERT INTO users(fullName, identityNumber, phoneNumber, email, state, city, address, postCode, occupation, bankName, bankAccountNumber, bankHolderName, password, role) VALUES(#{fullName}, #{identityNumber},#{phoneNumber}, #{email}, #{state}, #{city}, #{address}, #{postCode}, #{occupation}, #{bankName}, #{bankAccountNumber}, #{bankHolderName}, #{password}, #{role})")
+    @Select("SELECT * FROM users WHERE createdby = #{username}")
+    Optional<User> findByCreatedBy(String username);
+
+    @Insert("INSERT INTO users(fullName, identityNumber, phoneNumber, email, state, city, address, postCode, occupation, bankName, bankAccountNumber, bankHolderName, password, role, createdby) VALUES(#{fullName}, #{identityNumber},#{phoneNumber}, #{email}, #{state}, #{city}, #{address}, #{postCode}, #{occupation}, #{bankName}, #{bankAccountNumber}, #{bankHolderName}, #{password}, #{role}, #{createdby})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void save(User user);
 }

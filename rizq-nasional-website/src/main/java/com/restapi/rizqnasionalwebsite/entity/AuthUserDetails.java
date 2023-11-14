@@ -25,6 +25,14 @@ public class AuthUserDetails implements UserDetails {
                 .collect(Collectors.toList()); 
     } 
 
+    public AuthUserDetails(Admin admin) { 
+        identityNumber = admin.getUsername(); 
+        password = admin.getPassword(); 
+        authorities = Arrays.stream(admin.getRole().split(",")) 
+                .map(SimpleGrantedAuthority::new) 
+                .collect(Collectors.toList()); 
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

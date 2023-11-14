@@ -21,31 +21,31 @@ USE `rizq_nasional`;
 
 -- Dumping structure for table rizq_nasional.investment_table
 CREATE TABLE IF NOT EXISTS `investment_table` (
-  `code` varchar(10) NOT NULL,
+  `id` varchar(10) NOT NULL,
   `userIdentityNumber` varchar(20) NOT NULL,
   `date` date NOT NULL,
-  `tenure` int(11) NOT NULL,
-  `plan` varchar(255) NOT NULL,
-  `interest` decimal(10,2) NOT NULL,
+  `dateWithdrawl` date NOT NULL,
+  `planId` varchar(255) NOT NULL,
   `amount` decimal(10,2) NOT NULL,
   `statusPlan` varchar(20) NOT NULL,
-  `statusWithdrawal` varchar(20) NOT NULL
+  `statusWithdrawal` varchar(20) NOT NULL,
+  PRIMARY KEY(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Dumping data for table rizq_nasional.investment_table: ~12 rows (approximately)
-INSERT INTO `investment_table` (`code`, `userIdentityNumber`, `date`, `tenure`, `plan`, `interest`, `amount`, `statusPlan`, `statusWithdrawal`) VALUES
-	('INV001', '123456789', '2023-10-21', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
-	('INV003', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false'),
-	('INV004', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
-	('INV005', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'true'),
-	('INV006', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
-	('INV007', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
-	('INV008', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
-	('INV009', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
-	('INV010', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
-	('INV011', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
-	('INV012', '123456789', '2023-10-22', 100, 'Premium', 5.50, 500.00, 'On Going', 'false'),
-	('INV002', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false');
+-- INSERT INTO `investment_table` (`code`, `userIdentityNumber`, `date`, `tenure`, `plan`, `interest`, `amount`, `statusPlan`, `statusWithdrawal`) VALUES
+-- 	('INV001', '123456789', '2023-10-21', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
+-- 	('INV003', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false'),
+-- 	('INV004', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
+-- 	('INV005', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'true'),
+-- 	('INV006', '123456789', '2023-10-22', 100, 'Premium', 6.00, 500.00, 'On Going', 'false'),
+-- 	('INV007', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
+-- 	('INV008', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
+-- 	('INV009', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'true'),
+-- 	('INV010', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
+-- 	('INV011', '123456789', '2023-10-22', 100, 'Premium', 7.00, 500.00, 'On Going', 'false'),
+-- 	('INV012', '123456789', '2023-10-22', 100, 'Premium', 5.50, 500.00, 'On Going', 'false'),
+-- 	('INV002', '123456789', '2023-10-22', 100, 'Premium', 8.50, 500.00, 'On Going', 'false');
 
 -- Dumping structure for table rizq_nasional.stockholding
 CREATE TABLE IF NOT EXISTS `stockholding` (
@@ -59,19 +59,19 @@ CREATE TABLE IF NOT EXISTS `stockholding` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table rizq_nasional.stockholding: ~12 rows (approximately)
-INSERT INTO `stockholding` (`id`, `userIdentityNumber`, `stockId`, `investmentId`, `purchasedPrice`, `purchasedDate`) VALUES
-	('SH2361101', '123456789', 'GLD', 'INV001', 12000, '2023-11-06'),
-	('SH236118122', '123456789', 'GLD', 'INV002', 12000, '2023-11-06'),
-	('SH236118166', '123456789', 'GLD', 'INV003', 12000, '2023-11-06'),
-	('SH2380908', '123456789', 'IE', 'INV004', 5000, '2023-09-08'),
-	('SH238090822', '123456789', 'IE', 'INV005', 5000, '2023-09-08'),
-	('SH238090866', '123456789', 'IE', 'INV006', 5000, '2023-09-08'),
-	('SH2381001', '123456789', 'CRYPT', 'INV007', 10000, '2023-10-08'),
-	('SH238108166', '123456789', 'CRYPT', 'INV008', 9000, '2023-10-08'),
-	('SH2381091', '123456789', 'CRYPT', 'INV009', 10000, '2023-10-08'),
-	('SH238109122', '123456789', 'CRYPT', 'INV010', 10000, '2023-10-08'),
-	('SH238109166', '123456789', 'CRYPT', 'INV011', 10000, '2022-10-08'),
-	('SH2381101', '123456789', 'FX', 'INV012', 4000, '2023-11-08');
+-- INSERT INTO `stockholding` (`id`, `userIdentityNumber`, `stockId`, `investmentId`, `purchasedPrice`, `purchasedDate`) VALUES
+-- 	('SH2361101', '123456789', 'GLD', 'INV001', 12000, '2023-11-06'),
+-- 	('SH236118122', '123456789', 'GLD', 'INV002', 12000, '2023-11-06'),
+-- 	('SH236118166', '123456789', 'GLD', 'INV003', 12000, '2023-11-06'),
+-- 	('SH2380908', '123456789', 'IE', 'INV004', 5000, '2023-09-08'),
+-- 	('SH238090822', '123456789', 'IE', 'INV005', 5000, '2023-09-08'),
+-- 	('SH238090866', '123456789', 'IE', 'INV006', 5000, '2023-09-08'),
+-- 	('SH2381001', '123456789', 'CRYPT', 'INV007', 10000, '2023-10-08'),
+-- 	('SH238108166', '123456789', 'CRYPT', 'INV008', 9000, '2023-10-08'),
+-- 	('SH2381091', '123456789', 'CRYPT', 'INV009', 10000, '2023-10-08'),
+-- 	('SH238109122', '123456789', 'CRYPT', 'INV010', 10000, '2023-10-08'),
+-- 	('SH238109166', '123456789', 'CRYPT', 'INV011', 10000, '2022-10-08'),
+-- 	('SH2381101', '123456789', 'FX', 'INV012', 4000, '2023-11-08');
 
 -- Dumping structure for table rizq_nasional.stocks
 CREATE TABLE IF NOT EXISTS `stocks` (
@@ -82,15 +82,25 @@ CREATE TABLE IF NOT EXISTS `stocks` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Dumping data for table rizq_nasional.stocks: ~4 rows (approximately)
-INSERT INTO `stocks` (`id`, `stockName`, `currPrice`) VALUES
-	('CRYPT', 'CRYPTO', 15000),
-	('FX', 'FOREX', 5000),
-	('GLD', 'GOLD', 13000),
-	('IE', 'INTERNATIONAL EQUITIES', 8000);
+-- INSERT INTO `stocks` (`id`, `stockName`, `currPrice`) VALUES
+-- 	('CRYPT', 'CRYPTO', 15000),
+-- 	('FX', 'FOREX', 5000),
+-- 	('GLD', 'GOLD', 13000),
+-- 	('IE', 'INTERNATIONAL EQUITIES', 8000);
+
+CREATE TABLE IF NOT EXISTS `admins` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fullName` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  `createdby` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+)
 
 -- Dumping structure for table rizq_nasional.users
 CREATE TABLE IF NOT EXISTS `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `fullName` varchar(100) NOT NULL,
   `identityNumber` varchar(100) NOT NULL,
   `phoneNumber` varchar(100) NOT NULL,
@@ -105,6 +115,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `bankHolderName` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `role` varchar(100) NOT NULL,
+  `createdby` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
