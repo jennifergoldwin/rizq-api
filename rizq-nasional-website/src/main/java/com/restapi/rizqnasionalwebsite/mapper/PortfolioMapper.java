@@ -15,23 +15,22 @@ import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
 @Mapper
 public interface PortfolioMapper {
     @Select("SELECT " +
-            "COUNT(DISTINCT sh.stockId) AS total_investment, " +
+            "COUNT(DISTINCT sh.id) AS total_investment, " +
             "SUM(sh.purchasedPrice) AS total_deposit, " +
             "SUM(sh.currPrice - sh.purchasedPrice) AS total_profit " +
             "FROM users u " +
             "LEFT JOIN ( " +
             "   SELECT " +
             "       sh1.userIdentityNumber, " +
-            "       sh1.stockId, " +
+            "       sh1.id, " +
             "       sh1.purchasedPrice, " +
             "       s.currPrice, " +
             "       it.statusWithdrawal " +
             "   FROM stockHolding sh1 " +
             "   LEFT JOIN stocks s ON sh1.stockId = s.id " +
-            "   LEFT JOIN investment it ON sh1.investmentId = it.code " +
+            "   LEFT JOIN investment it ON sh1.investmentId = it.id AND it.statusWithdrawal = 'false' " +
             ") sh ON u.identityNumber = sh.userIdentityNumber " +
             "WHERE u.identityNumber = #{identityNumber} " +
-            "AND sh.statusWithdrawal = 'false' " +
             "GROUP BY u.identityNumber, u.fullName")
     @Results({
         @Result(property = "total_investment", column = "total_investment"),
@@ -40,8 +39,9 @@ public interface PortfolioMapper {
     })
     Optional<Portfolio> getUserPortfolio(String identityNumber);
 
+
     @Select("SELECT " + 
-        "sh.stockId, "+
+        "sh.id, "+
         "s.stockName, " + 
         "SUM(sh.purchasedPrice) AS totalPurchasedPrice " +
         "FROM stockHolding sh " +
@@ -49,7 +49,7 @@ public interface PortfolioMapper {
         "WHERE sh.userIdentityNumber = #{identityNumber} "+
         "GROUP BY sh.stockId, s.stockName" )
     @Results({
-        @Result(property = "stockId", column = "stockId"),
+        @Result(property = "id", column = "stockId"),
         @Result(property = "stockName", column = "stockName"),
         @Result(property = "totalPurchasedPrice", column = "totalPurchasedPrice")
     })

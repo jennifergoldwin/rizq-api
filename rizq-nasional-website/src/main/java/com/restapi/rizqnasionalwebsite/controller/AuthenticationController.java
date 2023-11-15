@@ -113,7 +113,7 @@ public class AuthenticationController {
             }
             userService.registerUser(user);
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "User created", userService.getListUser(user.getCreatedby())));
+            .body(new CommonResponse<>(false, "User created", user));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

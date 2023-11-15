@@ -8,5 +8,14 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class StatementResponse {
-    private List<Statement> statement;
+    private String id;
+    private String date;
+    private String endDate;
+    private String dateWithdrawl;
+    private String planType;
+    private int tenure;
+    private double interest;
+    private double amount;
+    private String statusPlan;
+    private String statusWithdrawal;
 }

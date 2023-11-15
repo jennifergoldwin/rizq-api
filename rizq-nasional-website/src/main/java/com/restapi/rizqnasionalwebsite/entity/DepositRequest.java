@@ -12,7 +12,10 @@ import lombok.NoArgsConstructor;
 public class DepositRequest {
     private String userIdentityNumber;
     private String date;
+    private String dateWithdrawl;
     private String planId;
     private int amount;
+    private String statusPlan;
+    private String statusWithdrawl;
     private List<StockDepo> assetsAllocation;
 }

@@ -14,13 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
-import com.restapi.rizqnasionalwebsite.entity.DepositRequest;
 import com.restapi.rizqnasionalwebsite.entity.InvestmentGrowth;
 import com.restapi.rizqnasionalwebsite.entity.Portfolio;
 import com.restapi.rizqnasionalwebsite.entity.PortfolioResponse;
 import com.restapi.rizqnasionalwebsite.entity.Stock;
 import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
-import com.restapi.rizqnasionalwebsite.entity.StockResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.service.PortfolioService;
 import com.restapi.rizqnasionalwebsite.service.StockService;
