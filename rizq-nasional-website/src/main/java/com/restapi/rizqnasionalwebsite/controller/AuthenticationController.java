@@ -20,6 +20,7 @@ import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
+import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
@@ -71,6 +72,18 @@ public class AuthenticationController {
         }
     }
 
+     @GetMapping("/listuser/{username}")
+     public ResponseEntity<?> getListUser(@PathVariable String username) {
+        try {
+            List<UserInfoAdmin> list = userService.getListUser(username);
+            
+            return ResponseEntity.ok(new CommonResponse<>(false, "success", list));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     @PostMapping("/register-admin")
     public ResponseEntity<?> registerAdmin(@RequestBody Admin admin){
         try {
@@ -100,7 +113,7 @@ public class AuthenticationController {
             }
             userService.registerUser(user);
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "User created", null));
+            .body(new CommonResponse<>(false, "User created", userService.getListUser(user.getCreatedby())));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

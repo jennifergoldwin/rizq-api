@@ -67,6 +67,18 @@ CREATE TABLE IF NOT EXISTS `stocks` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+CREATE TABLE IF NOT EXISTS `plan`(
+  `id` varchar(100) NOT NULL,
+  `planType` varchar(100) NOT NULL,
+  `interest` double NOT NULL,
+  `tenure` int NOT NULL,
+  PRIMARY KEY(`id`)
+)
+
+INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('BS001', 'Basic', '0.3', '100');
+INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('ST001', 'Standard', '0.4', '200');
+INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('PR001', 'Premium', '0.5', '300');
+
 -- Dumping data for table rizq_nasional.stocks: ~4 rows (approximately)
 -- INSERT INTO `stocks` (`id`, `stockName`, `currPrice`) VALUES
 -- 	('CRYPT', 'CRYPTO', 15000),

@@ -1,5 +1,6 @@
 package com.restapi.rizqnasionalwebsite.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder; 
 import org.springframework.stereotype.Service;
 
+import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
 import com.restapi.rizqnasionalwebsite.entity.User;
+import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
+import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
 import com.restapi.rizqnasionalwebsite.mapper.UserMapper;
 
 @Service
@@ -18,6 +22,9 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	private UserMapper userMapper; 
+
+    @Autowired
+	private AdminMapper adminMapper; 
 
 	@Autowired
 	private PasswordEncoder encoder; 
@@ -35,6 +42,14 @@ public class UserService implements UserDetailsService {
 
     public User getUserByIdentityNumber(String identityNumber) {
         return userMapper.findByIdentityNumber(identityNumber).orElse(null);
+    }
+
+    public List<UserInfoAdmin> getListUser(String username){
+        Admin admin = adminMapper.findByUsername(username).orElse(null);
+        if (admin.getRole().equals("ROLE_MASTER_ADMIN")){
+            return userMapper.findByCreatedByMasterRole(username);
+        }
+        return userMapper.findByCreatedBy(username);
     }
 
 	@Override
