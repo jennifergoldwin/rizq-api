@@ -17,13 +17,14 @@ public interface PortfolioMapper {
     @Select("SELECT " +
             "COUNT(DISTINCT sh.id) AS total_investment, " +
             "SUM(sh.purchasedPrice) AS total_deposit, " +
-            "SUM(sh.currPrice - sh.purchasedPrice) AS total_profit " +
+            "SUM((sh.currPrice - sh.purchasedPrice) * sh.value) AS total_profit " +
             "FROM users u " +
             "LEFT JOIN ( " +
             "   SELECT " +
             "       sh1.userIdentityNumber, " +
             "       sh1.id, " +
             "       sh1.purchasedPrice, " +
+            "       sh1.value, " +
             "       s.currPrice, " +
             "       it.statusWithdrawal " +
             "   FROM stockHolding sh1 " +

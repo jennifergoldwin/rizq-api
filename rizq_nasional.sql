@@ -1,104 +1,93 @@
--- --------------------------------------------------------
--- Host:                         127.0.0.1
--- Server version:               10.4.27-MariaDB - mariadb.org binary distribution
--- Server OS:                    Win64
--- HeidiSQL Version:             12.6.0.6765
--- --------------------------------------------------------
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 16, 2023 at 07:40 AM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET NAMES utf8 */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `rizq_nasional`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `admins`
+--
+
+CREATE TABLE `admins` (
+  `id` int(11) NOT NULL,
+  `fullName` varchar(100) NOT NULL,
+  `username` varchar(100) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `role` varchar(100) NOT NULL,
+  `createdby` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT INTO `admins` (`id`, `fullName`, `username`, `password`, `role`, `createdby`) VALUES
+(1, 'Eric Chandra', 'erichan', '$2a$10$QJezNId44Z5rjIQqvL022exMrNqG7HJefqM9NtEb3Y7.d9fJNKFgy', 'ROLE_MASTER_ADMIN', 'default'),
+(2, 'Richard', 'richard', '$2a$10$GyjIj6vCDuZHJV5p7O/I2uTaeE4brhkmATSa.UMDJhQ37iXSlwgKi', 'ROLE_MASTER_ADMIN', 'default');
 
 
--- Dumping database structure for rizq_nasional
-CREATE DATABASE IF NOT EXISTS `rizq_nasional` /*!40100 DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci */;
-USE `rizq_nasional`;
-
--- Dumping structure for table rizq_nasional.investment_table
-CREATE TABLE IF NOT EXISTS `investment` (
+CREATE TABLE `investment` (
   `id` varchar(10) NOT NULL,
   `userIdentityNumber` varchar(20) NOT NULL,
   `date` date NOT NULL,
-  `dateWithdrawl` date NOT NULL,
+  `dateWithdrawl` date DEFAULT NULL,
   `planId` varchar(255) NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
+  `amount` double NOT NULL,
   `statusPlan` varchar(20) NOT NULL,
-  `statusWithdrawal` varchar(20) NOT NULL,
-  PRIMARY KEY(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+  `statusWithdrawal` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping structure for table rizq_nasional.stockholding
-CREATE TABLE IF NOT EXISTS `stockholding` (
+
+CREATE TABLE `plan` (
+  `id` varchar(100) NOT NULL,
+  `planType` varchar(100) NOT NULL,
+  `interest` double NOT NULL,
+  `tenure` int(11) NOT NULL,
+  `price` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+
+INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`, `price`) VALUES
+('BS001', 'Basic', 0.3, 100, 50),
+('PR001', 'Premium', 0.5, 300, 100),
+('ST001', 'Standard', 0.4, 200, 200);
+
+
+CREATE TABLE `stockholding` (
   `id` varchar(100) NOT NULL,
   `userIdentityNumber` varchar(100) NOT NULL,
   `investmentId` varchar(100) NOT NULL,
   `stockId` varchar(100) NOT NULL,
   `purchasedPrice` int(11) NOT NULL,
   `value` int(11) NOT NULL,
-  `purchasedDate` date NOT NULL,
-  PRIMARY KEY (`id`)
+  `purchasedDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table rizq_nasional.stockholding: ~12 rows (approximately)
--- INSERT INTO `stockholding` (`id`, `userIdentityNumber`, `stockId`, `investmentId`, `purchasedPrice`, `purchasedDate`) VALUES
--- 	('SH2361101', '123456789', 'GLD', 'INV001', 12000, '2023-11-06'),
--- 	('SH236118122', '123456789', 'GLD', 'INV002', 12000, '2023-11-06'),
--- 	('SH236118166', '123456789', 'GLD', 'INV003', 12000, '2023-11-06'),
--- 	('SH2380908', '123456789', 'IE', 'INV004', 5000, '2023-09-08'),
--- 	('SH238090822', '123456789', 'IE', 'INV005', 5000, '2023-09-08'),
--- 	('SH238090866', '123456789', 'IE', 'INV006', 5000, '2023-09-08'),
--- 	('SH2381001', '123456789', 'CRYPT', 'INV007', 10000, '2023-10-08'),
--- 	('SH238108166', '123456789', 'CRYPT', 'INV008', 9000, '2023-10-08'),
--- 	('SH2381091', '123456789', 'CRYPT', 'INV009', 10000, '2023-10-08'),
--- 	('SH238109122', '123456789', 'CRYPT', 'INV010', 10000, '2023-10-08'),
--- 	('SH238109166', '123456789', 'CRYPT', 'INV011', 10000, '2022-10-08'),
--- 	('SH2381101', '123456789', 'FX', 'INV012', 4000, '2023-11-08');
 
--- Dumping structure for table rizq_nasional.stocks
-CREATE TABLE IF NOT EXISTS `stocks` (
+CREATE TABLE `stocks` (
   `id` varchar(100) NOT NULL,
   `stockName` varchar(100) NOT NULL,
-  `currPrice` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
+  `currPrice` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-CREATE TABLE IF NOT EXISTS `plan`(
-  `id` varchar(100) NOT NULL,
-  `planType` varchar(100) NOT NULL,
-  `interest` double NOT NULL,
-  `tenure` int NOT NULL,
-  PRIMARY KEY(`id`)
-)
 
-INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('BS001', 'Basic', '0.3', '100');
-INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('ST001', 'Standard', '0.4', '200');
-INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`) VALUES ('PR001', 'Premium', '0.5', '300');
-
--- Dumping data for table rizq_nasional.stocks: ~4 rows (approximately)
--- INSERT INTO `stocks` (`id`, `stockName`, `currPrice`) VALUES
--- 	('CRYPT', 'CRYPTO', 15000),
--- 	('FX', 'FOREX', 5000),
--- 	('GLD', 'GOLD', 13000),
--- 	('IE', 'INTERNATIONAL EQUITIES', 8000);
-
-CREATE TABLE IF NOT EXISTS `admins` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fullName` varchar(100) NOT NULL,
-  `username` varchar(100) NOT NULL,
-  `password` varchar(100) NOT NULL,
-  `role` varchar(100) NOT NULL,
-  `createdby` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-)
-
--- Dumping structure for table rizq_nasional.users
-CREATE TABLE IF NOT EXISTS `users` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
   `fullName` varchar(100) NOT NULL,
   `identityNumber` varchar(100) NOT NULL,
   `phoneNumber` varchar(100) NOT NULL,
@@ -113,17 +102,34 @@ CREATE TABLE IF NOT EXISTS `users` (
   `bankHolderName` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `role` varchar(100) NOT NULL,
-  `createdby` varchar(100) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `createdby` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- Dumping data for table rizq_nasional.users: ~2 rows (approximately)
--- INSERT INTO `users` (`id`, `fullName`, `identityNumber`, `phoneNumber`, `email`, `state`, `city`, `address`, `postCode`, `occupation`, `bankName`, `bankAccountNumber`, `bankHolderName`, `password`, `role`) VALUES
--- 	(1, 'Jessica', '123456789', '+6281377036883', 'jessica@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$VgCfGHKo6i572GeEA069Rerh1o3g3wlbDDa6bt4uoNUIIDFEyQ/Je', 'ROLE_USER'),
--- 	(2, 'Sandra', '111111111', '+6281377036883', 'sandra@gmail.com', 'Selangor', 'Kuala Lumpur', '10AB Gudng', '123', 'Manager', 'UOB', '12228922', 'Jessica', '$2a$10$9AegNOqMV2DOghGoDCFlp.iY28ibZC.fYV8Yi6gWwzfQksmpVMz9y', 'ROLE_USER');
 
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+ALTER TABLE `admins`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `investment`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `plan`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `stockholding`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `stocks`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `admins`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+COMMIT;
+
+
