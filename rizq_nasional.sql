@@ -68,7 +68,7 @@ INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`, `price`) VALUES
 ('ST001', 'Standard', 0.4, 200, 200);
 
 
-CREATE TABLE `stockholding` (
+CREATE TABLE `stockHolding` (
   `id` varchar(100) NOT NULL,
   `userIdentityNumber` varchar(100) NOT NULL,
   `investmentId` varchar(100) NOT NULL,
