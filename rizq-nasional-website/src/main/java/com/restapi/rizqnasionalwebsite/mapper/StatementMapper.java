@@ -54,10 +54,10 @@ public interface StatementMapper {
     List<Plan> getAllPlan();
 
 
-    @Select("SELECT * FROM stockholding")
+    @Select("SELECT * FROM stockHolding")
     List<StockHolding> getAllHolding();
 
-    @Insert("INSERT INTO stockholding(id, userIdentityNumber, investmentId, stockId, purchasedPrice, value, purchasedDate) VALUES(#{id}, #{userIdentityNumber},#{investmentId}, #{stockId}, #{purchasedPrice}, #{value}, #{purchasedDate})")
+    @Insert("INSERT INTO stockHolding(id, userIdentityNumber, investmentId, stockId, purchasedPrice, value, purchasedDate) VALUES(#{id}, #{userIdentityNumber},#{investmentId}, #{stockId}, #{purchasedPrice}, #{value}, #{purchasedDate})")
     void saveHolding(StockHolding stockHolding);
 
     @Update("UPDATE investment SET statusWithdrawal = 'true', dateWithdrawl = CURDATE() WHERE id = #{id}")
