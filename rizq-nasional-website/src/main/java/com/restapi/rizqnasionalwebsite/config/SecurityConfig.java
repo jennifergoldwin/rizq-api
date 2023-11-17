@@ -26,8 +26,6 @@ import com.restapi.rizqnasionalwebsite.security.JwtAuthEntryPoint;
 import com.restapi.rizqnasionalwebsite.security.JwtAuthFilter;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
-
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -37,65 +35,61 @@ public class SecurityConfig {
     private JwtAuthEntryPoint unauthorizedHandler;
 
     @Autowired
-    private JwtAuthFilter authFilter; 
-  
+    private JwtAuthFilter authFilter;
 
-    // User Creation 
+    // User Creation
     @Bean
-    UserDetailsService userDetailsService() { 
-        return new UserService(); 
-    } 
-  
-    // Configuring HttpSecurity 
+    UserDetailsService userDetailsService() {
+        return new UserService();
+    }
+
+    // Configuring HttpSecurity
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception { 
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(cors -> cors.configurationSource(corsConfigurationSource())).csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
-                            "/api/v1/auth/welcome",
-                            "/api/v1/auth/login",
-                            "/api/v1/auth/login-admin", 
-                            "/api/v1/auth/register",
-                            "/api/v1/auth/register-admin").permitAll() // Allow registration and login without authentication
-                                .anyRequest().authenticated()
-                ).authenticationProvider(authenticationProvider())
+                                "/api/v1/auth/welcome",
+                                "/api/v1/auth/login",
+                                "/api/v1/auth/login-admin",
+                                "/api/v1/auth/register",
+                                "/api/v1/auth/register-admin")
+                        .permitAll() // Allow registration and login without authentication
+                        .anyRequest().authenticated())
+                .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authFilter, UsernamePasswordAuthenticationFilter.class).build();
-    } 
+    }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("*"));
         configuration.setAllowedMethods(Arrays.asList("*"));
-        configuration.addAllowedHeader("*");
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        // configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-  
-    // Password Encoding 
+
+    // Password Encoding
     @Bean
-    PasswordEncoder passwordEncoder() { 
-        return new BCryptPasswordEncoder(); 
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    AuthenticationProvider authenticationProvider() { 
-        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider(); 
-        authenticationProvider.setUserDetailsService(userDetailsService()); 
-        authenticationProvider.setPasswordEncoder(passwordEncoder()); 
-        return authenticationProvider; 
-    } 
-  
-    @Bean
-    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception { 
-        return config.getAuthenticationManager(); 
-    } 
+    AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        return authenticationProvider;
+    }
 
-   
-  
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
 }

@@ -15,10 +15,10 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         System.out.println("Registry is being created");
         registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000") // You can specify specific origins instead of "*"
-                .allowedMethods("*")
+                .allowedOrigins("*") // You can specify specific origins instead of "*"
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD")
                 .allowedHeaders("*");
-                // .allowCredentials(true)
+                // .allowCredentials(true);
                 // .maxAge(3600);
     }
 }
