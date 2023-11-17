@@ -41,20 +41,36 @@ public interface PortfolioMapper {
     Optional<Portfolio> getUserPortfolio(String identityNumber);
 
 
+    // @Select("SELECT " + 
+    //     "sh.id, "+
+    //     "s.stockName, " + 
+    //     "SUM(sh.purchasedPrice) AS totalPurchasedPrice " +
+    //     "FROM stockHolding sh " +
+    //     "LEFT JOIN stocks s ON sh.stockId = s.id " + 
+    //     "WHERE sh.userIdentityNumber = #{identityNumber} "+
+    //     "GROUP BY sh.stockId, s.stockName, sh.id" )
+    // @Results({
+    //     @Result(property = "id", column = "stockId"),
+    //     @Result(property = "stockName", column = "stockName"),
+    //     @Result(property = "totalPurchasedPrice", column = "totalPurchasedPrice")
+    // })
+    // List<StockPurchased> getUserAssetStock(String identityNumber);
+
     @Select("SELECT " + 
-        "sh.id, "+
+        "sh.stockId, "+
         "s.stockName, " + 
         "SUM(sh.purchasedPrice) AS totalPurchasedPrice " +
         "FROM stockHolding sh " +
         "LEFT JOIN stocks s ON sh.stockId = s.id " + 
         "WHERE sh.userIdentityNumber = #{identityNumber} "+
-        "GROUP BY sh.stockId, s.stockName, sh.id" )
+        "GROUP BY sh.stockId, s.stockName")
     @Results({
-        @Result(property = "id", column = "stockId"),
+        @Result(property = "stockId", column = "stockId"),
         @Result(property = "stockName", column = "stockName"),
         @Result(property = "totalPurchasedPrice", column = "totalPurchasedPrice")
     })
     List<StockPurchased> getUserAssetStock(String identityNumber);
+
 
 
     @Select("SELECT DATE_FORMAT(sh.purchasedDate, '%Y-%m') AS month, SUM(s.currPrice - sh.purchasedPrice) AS growth FROM users u INNER JOIN stockHolding sh ON u.identityNumber = sh.userIdentityNumber INNER JOIN stocks s ON sh.stockId = s.id WHERE u.identityNumber =  #{identityNumber} GROUP BY Month ORDER BY Month")
