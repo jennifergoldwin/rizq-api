@@ -14,47 +14,49 @@ import com.restapi.rizqnasionalwebsite.entity.StockPurchased;
 
 @Mapper
 public interface PortfolioMapper {
+    // @Select("SELECT " +
+    //         "COUNT(DISTINCT sh.id) AS total_investment, " +
+    //         "SUM(sh.purchasedPrice) AS total_deposit, " +
+    //         "SUM((sh.currPrice - sh.purchasedPrice) * sh.value) AS total_profit " +
+    //         "FROM users u " +
+    //         "LEFT JOIN ( " +
+    //         "   SELECT " +
+    //         "       sh1.userIdentityNumber, " +
+    //         "       sh1.id, " +
+    //         "       sh1.purchasedPrice, " +
+    //         "       sh1.value, " +
+    //         "       s.currPrice, " +
+    //         "       it.statusWithdrawal " +
+    //         "   FROM stockHolding sh1 " +
+    //         "   LEFT JOIN stocks s ON sh1.stockId = s.id " +
+    //         "   LEFT JOIN investment it ON sh1.investmentId = it.id AND it.statusWithdrawal = 'false' " +
+    //         ") sh ON u.identityNumber = sh.userIdentityNumber " +
+    //         "WHERE u.identityNumber = #{identityNumber} " +
+    //         "GROUP BY u.identityNumber, u.fullName")
+    // @Results({
+    //     @Result(property = "total_investment", column = "total_investment"),
+    //     @Result(property = "total_deposit", column = "total_deposit"),
+    //     @Result(property = "total_profit", column = "total_profit")
+    // })
+    // Optional<Portfolio> getUserPortfolio(String identityNumber);
+
+
     @Select("SELECT " +
-            "COUNT(DISTINCT sh.id) AS total_investment, " +
-            "SUM(sh.purchasedPrice) AS total_deposit, " +
-            "SUM((sh.currPrice - sh.purchasedPrice) * sh.value) AS total_profit " +
-            "FROM users u " +
-            "LEFT JOIN ( " +
-            "   SELECT " +
-            "       sh1.userIdentityNumber, " +
-            "       sh1.id, " +
-            "       sh1.purchasedPrice, " +
-            "       sh1.value, " +
-            "       s.currPrice, " +
-            "       it.statusWithdrawal " +
-            "   FROM stockHolding sh1 " +
-            "   LEFT JOIN stocks s ON sh1.stockId = s.id " +
-            "   LEFT JOIN investment it ON sh1.investmentId = it.id AND it.statusWithdrawal = 'false' " +
-            ") sh ON u.identityNumber = sh.userIdentityNumber " +
-            "WHERE u.identityNumber = #{identityNumber} " +
-            "GROUP BY u.identityNumber, u.fullName")
+    "SUM((s.currPrice - sh.purchasedPrice) * sh.value) AS total_profit, "+
+    "COUNT(DISTINCT i.id) AS total_investment, "+
+    "SUM(CASE WHEN i.statusWithdrawal = 'false' THEN i.amount ELSE 0 END) AS total_deposit "+
+    "FROM investment i "+
+    "JOIN "+
+    "stockHolding sh ON i.id = sh.investmentId "+
+    "JOIN "+
+    "stocks s ON sh.stockId = s.id "+
+    "WHERE i.userIdentityNumber = #{identityNumber}" )
     @Results({
         @Result(property = "total_investment", column = "total_investment"),
         @Result(property = "total_deposit", column = "total_deposit"),
         @Result(property = "total_profit", column = "total_profit")
     })
     Optional<Portfolio> getUserPortfolio(String identityNumber);
-
-
-    // @Select("SELECT " + 
-    //     "sh.id, "+
-    //     "s.stockName, " + 
-    //     "SUM(sh.purchasedPrice) AS totalPurchasedPrice " +
-    //     "FROM stockHolding sh " +
-    //     "LEFT JOIN stocks s ON sh.stockId = s.id " + 
-    //     "WHERE sh.userIdentityNumber = #{identityNumber} "+
-    //     "GROUP BY sh.stockId, s.stockName, sh.id" )
-    // @Results({
-    //     @Result(property = "id", column = "stockId"),
-    //     @Result(property = "stockName", column = "stockName"),
-    //     @Result(property = "totalPurchasedPrice", column = "totalPurchasedPrice")
-    // })
-    // List<StockPurchased> getUserAssetStock(String identityNumber);
 
     @Select("SELECT " + 
         "sh.stockId, "+
