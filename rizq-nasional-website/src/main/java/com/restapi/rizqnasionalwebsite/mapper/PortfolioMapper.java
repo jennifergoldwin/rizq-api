@@ -48,7 +48,7 @@ public interface PortfolioMapper {
         "FROM stockHolding sh " +
         "LEFT JOIN stocks s ON sh.stockId = s.id " + 
         "WHERE sh.userIdentityNumber = #{identityNumber} "+
-        "GROUP BY sh.stockId, s.stockName" )
+        "GROUP BY sh.stockId, s.stockName, sh.id" )
     @Results({
         @Result(property = "id", column = "stockId"),
         @Result(property = "stockName", column = "stockName"),
