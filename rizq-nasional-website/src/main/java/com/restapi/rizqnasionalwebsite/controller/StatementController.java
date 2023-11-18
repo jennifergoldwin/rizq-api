@@ -14,15 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
-import com.restapi.rizqnasionalwebsite.entity.DepositRequest;
+import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
-import com.restapi.rizqnasionalwebsite.entity.Stock;
-import com.restapi.rizqnasionalwebsite.entity.StockDepo;
-import com.restapi.rizqnasionalwebsite.entity.StockHolding;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.service.StatementService;
-import com.restapi.rizqnasionalwebsite.service.StockService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
 @RestController
@@ -33,10 +29,8 @@ public class StatementController {
     private StatementService statementService;
     @Autowired
     private UserService userService;
-    @Autowired
-    private StockService stockService;
 
-    @GetMapping("/statement/{id}")
+    @GetMapping("/statement-user/{id}")
     public ResponseEntity<?> getStatementUser(@PathVariable String id) {
       try {
           User user = userService.getUserByIdentityNumber(id);
@@ -44,8 +38,7 @@ public class StatementController {
               return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true,"Invalid identity number",null));
           }
           
-          List<StatementResponse> statement = statementService.getStatementByIdentityNumber(id);
-          System.out.println(statement);
+          List<StatementResponse> statement = statementService.getStatementByUser(id);
           return ResponseEntity.ok(new CommonResponse<>(false, "success", statement));
       } catch (Exception e) {
           e.printStackTrace(); 
@@ -53,56 +46,59 @@ public class StatementController {
       }
     }
 
-    @GetMapping("/welcome")
-    public String welcome() {
-    return "Welcome this endpoint is not secure";
+    @GetMapping("/statement-admin/{username}")
+    public ResponseEntity<?> getStatementAdmin(@PathVariable String username) {
+      try {
+          List<StatementResponse> statement = statementService.getStatementByAdmin(username);
+          return ResponseEntity.ok(new CommonResponse<>(false, "success", statement));
+      } catch (Exception e) {
+          e.printStackTrace(); 
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+      }
     }
 
-    @GetMapping("/plan")
-    public ResponseEntity<?> getAllPlaResponseEntity(){
-         try {           
-            return ResponseEntity.ok(new CommonResponse<>
-            (false, "success", statementService.getAllPlan()));
+    @PostMapping("/add-statement")
+    public ResponseEntity<?> addStatement(@RequestBody Statement statement){
+        try {
+            int lenStatement = statementService.getAllStatement().size()+1;
+            String idSt = "INV00" + lenStatement;
+            statement.setId(idSt);
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Statement added", statementService.addStatement(statement)));
         } catch (Exception e) {
-            e.printStackTrace(); 
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/update-statement")
+    public ResponseEntity<?> updateStatement(@RequestBody Statement statement){
+        try {
+            statementService.updateStatement(statement);
+            
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Statement updated", statementService.getAllStatement()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }
     }
 
     @PostMapping("/deposit")
-    public ResponseEntity<?> deposit(@RequestBody DepositRequest depositRequest){
+    public ResponseEntity<?> deposit(@RequestBody Investment investment){
         try {
-            // Check if any stocks in db
-            List<Stock> listStock = stockService.getAllStock();
-            if (listStock.isEmpty()) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CommonResponse<>(true, "Stock is empty", null));
-            }
-
             //add to investment
-            int lenInv = statementService.getAllStatements().size()+1;
+            int lenInv = statementService.getAllInvestment().size()+1;
             String idInv = "INV00" + lenInv;
-            statementService.addStatement(new Statement(idInv,depositRequest.getUserIdentityNumber(),depositRequest.getDate(),depositRequest.getDateWithdrawl(),depositRequest.getPlanId(),depositRequest.getAmount(),depositRequest.getStatusPlan(),depositRequest.getStatusWithdrawl()));
+            investment.setId(idInv);
+            statementService.deposit(investment);
 
-            //add to stockHolding
-           
-            for (int i = 0 ; i < depositRequest.getAssetsAllocation().size() ; i++){
-                int lenSH = statementService.getAllHolding().size()+1;
-                String idSH = "SH00" + lenSH;
-                StockDepo sp = depositRequest.getAssetsAllocation().get(i);
-                Stock stock = new Stock();
-                for (int j = 0 ; j < listStock.size(); j++){
-                    if (listStock.get(j).getId().equals(sp.getStockId())){
-                        stock.setId(listStock.get(j).getId());
-                        stock.setStockName(listStock.get(j).getStockName());
-                        stock.setCurrPrice(listStock.get(j).getCurrPrice());
-                        break;
-                    }
-                }
-                statementService.addHolding(new StockHolding(idSH, depositRequest.getUserIdentityNumber(), idInv, sp.getStockId(), stock.getCurrPrice(), sp.getValue(), depositRequest.getDate()));
-            }
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Deposit updated", null));
+            .body(new CommonResponse<>(false, "Deposit success", null));
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -113,7 +109,7 @@ public class StatementController {
     @PutMapping("/withdrawl/{id}")
     public ResponseEntity<?> withdrawl(@PathVariable String id){
          try {
-            statementService.updatedStatement(id);
+            statementService.withdrawal(id);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Withdrawl requested", null));
         } catch (Exception e) {

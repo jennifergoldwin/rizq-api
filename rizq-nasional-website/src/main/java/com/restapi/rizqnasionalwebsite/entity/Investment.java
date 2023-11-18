@@ -1,7 +1,5 @@
 package com.restapi.rizqnasionalwebsite.entity;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,13 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepositRequest {
+public class Investment {
+    private String id;
     private String userIdentityNumber;
-    private String date;
+    private String dateDeposit;
     private String dateWithdrawl;
-    private String planId;
-    private int amount;
-    private String statusPlan;
-    private String statusWithdrawl;
-    private List<StockDepo> assetsAllocation;
+    private double totalDeposit;
+    private double totalProfit;
+    private String statusDeposit;
+    private String statusWithdrawal;
 }

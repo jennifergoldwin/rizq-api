@@ -15,18 +15,16 @@ import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 
 @Mapper
 public interface UserMapper {
+    //login
     @Select("SELECT * FROM users WHERE identityNumber = #{identityNumber}")
     Optional<User> findByIdentityNumber(String identityNumber);
-
-    // @Select("SELECT * FROM users WHERE createdby = #{username}")
-    // Optional<User> findByCreatedBy(String username);
 
     @Select("SELECT " + 
             "u.identityNumber," + 
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
-            "IFNULL(SUM(i.amount), 0) AS totalDeposit, " + 
+            "IFNULL(SUM(i.totalDeposit), 0) AS totalDeposit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 
@@ -50,7 +48,7 @@ public interface UserMapper {
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
-            "IFNULL(SUM(i.amount), 0) AS totalDeposit, " + 
+            "IFNULL(SUM(i.totalDeposit), 0) AS totalDeposit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 

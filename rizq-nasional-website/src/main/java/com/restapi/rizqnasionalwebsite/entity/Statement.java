@@ -11,9 +11,7 @@ public class Statement {
     private String id;
     private String userIdentityNumber;
     private String date;
-    private String dateWithdrawl;
-    private String planId;
-    private int amount;
-    private String statusPlan;
-    private String statusWithdrawal;
+    private String product;
+    private String leverage;
+    private String profitLoss;
 }
