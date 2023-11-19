@@ -43,6 +43,10 @@ public class StatementService {
         return statementMapper.getAllInvestment();
     }
 
+    public List<Investment> getAllInvestmentUser(String id){
+        return statementMapper.getAllInvestmentUser(id);
+    }
+
     public void withdrawal(String id){
         statementMapper.withdrawal(id);
     }

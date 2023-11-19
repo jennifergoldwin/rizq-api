@@ -51,6 +51,10 @@ public interface StatementMapper {
     @Select("SELECT * FROM investment")
     List<Investment> getAllInvestment(); //for generate id
 
+    //get list investment by identity number user
+    @Select("SELECT * FROM investment WHERE userIdentityNumber = #{id}")
+    List<Investment> getAllInvestmentUser(String id);
+
     @Insert("INSERT INTO investment(id, userIdentityNumber, dateDeposit, dateWithdrawal, "+
     "totalDeposit, totalProfit, statusDeposit, statusWithdrawal) VALUES(#{id}, #{userIdentityNumber},#{dateDeposit}, #{dateWithdrawal}, "+
     "#{totalDeposit}, #{totalProfit}, #{statusDeposit}, #{statusWithdrawal})")

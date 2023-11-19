@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admins` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `fullName` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE `investment` (
   `dateDeposit` date NOT NULL,
   `dateWithdrawal` date DEFAULT NULL,
   `totalDeposit` double NOT NULL,
-  `totalProfit ` double NOT NULL,
+  `totalProfit` double NOT NULL,
   `statusDeposit` varchar(20) NOT NULL,
   `statusWithdrawal` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -77,7 +77,7 @@ CREATE TABLE `statement`(
 )
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fullName` varchar(100) NOT NULL,
   `identityNumber` varchar(100) NOT NULL,
   `phoneNumber` varchar(100) NOT NULL,

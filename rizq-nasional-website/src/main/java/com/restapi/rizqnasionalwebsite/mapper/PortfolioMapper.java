@@ -33,7 +33,7 @@ public interface PortfolioMapper {
     
     @Select("SELECT DATE_FORMAT(dateDeposit, '%Y-%m') AS month, "+
     "SUM(totalProfit) AS growth "+
-    "FROM investment"+
+    "FROM investment "+
     "WHERE userIdentityNumber  =  #{identityNumber} GROUP BY month ORDER BY month")
     @Results({
         @Result(property = "month", column = "month"),

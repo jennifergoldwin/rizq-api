@@ -87,6 +87,21 @@ public class StatementController {
         }
     }
 
+    @GetMapping("/investment/{id}")
+    public ResponseEntity<?> getAllInvestmentUser(@PathVariable String id){
+        try {
+          User user = userService.getUserByIdentityNumber(id);
+          if (user == null){
+              return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true,"Invalid identity number",null));
+          }
+          
+          List<Investment> statement = statementService.getAllInvestmentUser(id);
+          return ResponseEntity.ok(new CommonResponse<>(false, "success", statement));
+      } catch (Exception e) {
+          e.printStackTrace(); 
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+      }
+    }
     @PostMapping("/deposit")
     public ResponseEntity<?> deposit(@RequestBody Investment investment){
         try {

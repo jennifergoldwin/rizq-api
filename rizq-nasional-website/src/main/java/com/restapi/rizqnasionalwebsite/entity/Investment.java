@@ -11,7 +11,7 @@ public class Investment {
     private String id;
     private String userIdentityNumber;
     private String dateDeposit;
-    private String dateWithdrawl;
+    private String dateWithdrawal;
     private double totalDeposit;
     private double totalProfit;
     private String statusDeposit;
