@@ -23,7 +23,7 @@ public interface StatementMapper {
     //add statement
     @Insert("INSERT INTO statement(id, userIdentityNumber, date, product, "+
     "leverage, profitLoss) VALUES(#{id}, #{userIdentityNumber},#{date}, #{product}, #{leverage}, #{profitLoss})")
-    Statement addStatement(Statement statement); 
+    void addStatement(Statement statement); 
 
     //update statement
     @Update("UPDATE statement SET date = #{date}, product = #{product}, leverage = #{leverage}, "+

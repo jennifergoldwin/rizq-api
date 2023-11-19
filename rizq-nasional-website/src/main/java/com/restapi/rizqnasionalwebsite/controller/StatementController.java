@@ -13,11 +13,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
+import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
@@ -27,8 +29,12 @@ public class StatementController {
 
     @Autowired
     private StatementService statementService;
+
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     @GetMapping("/statement-user/{id}")
     public ResponseEntity<?> getStatementUser(@PathVariable String id) {
@@ -61,11 +67,15 @@ public class StatementController {
     public ResponseEntity<?> addStatement(@RequestBody Statement statement){
         try {
             int lenStatement = statementService.getAllStatement().size()+1;
-            String idSt = "INV00" + lenStatement;
+            String idSt = "ST00" + lenStatement;
             statement.setId(idSt);
+            statementService.addStatement(statement);
+            
+            StatementResponse sr = new StatementResponse(statement,userService.getUserByIdentityNumber(statement.getUserIdentityNumber()).getFullName());
+            
 
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Statement added", statementService.addStatement(statement)));
+            .body(new CommonResponse<>(false, "Statement added",sr));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -77,9 +87,11 @@ public class StatementController {
     public ResponseEntity<?> updateStatement(@RequestBody Statement statement){
         try {
             statementService.updateStatement(statement);
-            
+            User us = userService.getUserByIdentityNumber(statement.getUserIdentityNumber());
+            Admin admin = adminService.getAdminByUsername(us.getCreatedby());
+            List<StatementResponse> statementList = statementService.getStatementByAdmin(admin.getUsername());
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Statement updated", statementService.getAllStatement()));
+            .body(new CommonResponse<>(false, "Statement updated", statementList));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

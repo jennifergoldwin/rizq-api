@@ -21,7 +21,8 @@ public class StatementService {
 
     //add statement
     public Statement addStatement(Statement statement){
-        return statementMapper.addStatement(statement);
+        statementMapper.addStatement(statement);
+        return statement;
     }
     //update statement
     public void updateStatement(Statement statement){
