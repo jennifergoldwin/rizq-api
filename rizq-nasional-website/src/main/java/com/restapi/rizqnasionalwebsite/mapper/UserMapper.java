@@ -49,13 +49,13 @@ public interface UserMapper {
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
-            "IFNULL(SUM(i.totalDeposit), 0) AS totalDeposit, " + 
+            "IFNULL(SUM(CASE WHEN i.statuswithdrawal = 'false' THEN i.totalDeposit ELSE 0 END), 0) AS totalDeposit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 
             "LEFT JOIN " + 
             "investment i ON u.identityNumber = i.userIdentityNumber " + 
-            "WHERE u.createdby = #{username} AND i.statusWithdrawal = 'false' " +
+            "WHERE u.createdby = #{username} " +
             "GROUP BY " + 
             "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby")
     @Results({
@@ -71,11 +71,11 @@ public interface UserMapper {
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void save(User user);
 
-    @Update("UPDATE users SET bankName = #{bankName}, bankAccountNumber = #{bankAccountNumber} "+
+    @Update("UPDATE users SET bankName = #{bankName}, bankAccountNumber = #{bankAccountNumber}, "+
     "bankHolderName = #{bankHolderName} WHERE identityNumber = #{identityNumber}")
     void updateBankDetails(User user);
 
-    @Update("UPDATE users SET state = #{state}, city = #{city} "+
-    "address = #{address} postCode = #{postCode} occupation = #{occupation} WHERE identityNumber = #{identityNumber}")
+    @Update("UPDATE users SET state = #{state}, city = #{city}, "+
+    "address = #{address}, postCode = #{postCode}, occupation = #{occupation} WHERE identityNumber = #{identityNumber}")
     void updateProfileDetails(User user);
 }
