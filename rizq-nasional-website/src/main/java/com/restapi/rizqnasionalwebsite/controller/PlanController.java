@@ -59,7 +59,7 @@ public class PlanController {
                         .body(new CommonResponse<>(true, "Plan doesn't exist", null));
             }
             
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Plan deleted", planService.deletePlan(plan)));
         } catch (Exception e) {
             e.printStackTrace();

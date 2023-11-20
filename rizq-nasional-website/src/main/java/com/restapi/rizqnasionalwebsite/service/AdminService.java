@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
+import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
 
 @Service
@@ -50,5 +51,11 @@ public class AdminService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Admin not found " + username));
 	}
       
-    
+    public void delete(Admin admin) {
+        adminMapper.delete(admin);
+    }
+
+    public void update(Admin admin){
+        adminMapper.update(admin);
+    }
 }

@@ -90,7 +90,7 @@ public class StatementController {
             User us = userService.getUserByIdentityNumber(statement.getUserIdentityNumber());
             Admin admin = adminService.getAdminByUsername(us.getCreatedby());
             List<StatementResponse> statementList = statementService.getStatementByAdmin(admin.getUsername());
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Statement updated", statementList));
         } catch (Exception e) {
             e.printStackTrace();
@@ -137,7 +137,7 @@ public class StatementController {
     public ResponseEntity<?> withdrawl(@PathVariable String id){
          try {
             statementService.withdrawal(id);
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Withdrawl requested", null));
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +150,7 @@ public class StatementController {
     public ResponseEntity<?> updateDeposit(@RequestBody Investment investment){
          try {
             statementService.updateDeposit(investment);
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Deposit updated", null));
         } catch (Exception e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +20,7 @@ import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
 import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
@@ -163,11 +165,36 @@ public class AuthenticationController {
         }
     }
 
+    @PutMapping("/update-admin")
+    public ResponseEntity<?> updateAdmin(@RequestBody Admin admin){
+        try {
+            adminService.update(admin);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Admin updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+    @DeleteMapping("/delete-admin")
+    public ResponseEntity<?> deleteAdmin(@RequestBody Admin admin) {
+        try {
+            // Check if the user with the provided identityNumber already exists
+            adminService.delete(admin);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Admin deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
     @PutMapping("/update-bank")
     public ResponseEntity<?> updateBankDetails(@RequestBody User user){
-         try {
+        try {
             userService.updateBankDetails(user);
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Bank details updated", null));
         } catch (Exception e) {
             e.printStackTrace();
@@ -180,7 +207,7 @@ public class AuthenticationController {
     public ResponseEntity<?> updateProfileDetails(@RequestBody User user){
          try {
             userService.updateProfileDetails(user);
-            return ResponseEntity.status(HttpStatus.CREATED)
+            return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Profile updated", null));
         } catch (Exception e) {
             e.printStackTrace();
