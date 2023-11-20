@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
@@ -54,7 +55,7 @@ public interface UserMapper {
             "users u " + 
             "LEFT JOIN " + 
             "investment i ON u.identityNumber = i.userIdentityNumber " + 
-            "WHERE u.createdby = #{username} " +
+            "WHERE u.createdby = #{username} AND i.statusWithdrawal = 'false' " +
             "GROUP BY " + 
             "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby")
     @Results({
@@ -69,4 +70,12 @@ public interface UserMapper {
     @Insert("INSERT INTO users(fullName, identityNumber, phoneNumber, email, state, city, address, postCode, occupation, bankName, bankAccountNumber, bankHolderName, password, role, createdby) VALUES(#{fullName}, #{identityNumber},#{phoneNumber}, #{email}, #{state}, #{city}, #{address}, #{postCode}, #{occupation}, #{bankName}, #{bankAccountNumber}, #{bankHolderName}, #{password}, #{role}, #{createdby})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void save(User user);
+
+    @Update("UPDATE users SET bankName = #{bankName}, bankAccountNumber = #{bankAccountNumber} "+
+    "bankHolderName = #{bankHolderName} WHERE identityNumber = #{identityNumber}")
+    void updateBankDetails(User user);
+
+    @Update("UPDATE users SET state = #{state}, city = #{city} "+
+    "address = #{address} postCode = #{postCode} occupation = #{occupation} WHERE identityNumber = #{identityNumber}")
+    void updateProfileDetails(User user);
 }

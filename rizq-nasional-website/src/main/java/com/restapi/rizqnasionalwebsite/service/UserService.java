@@ -52,6 +52,14 @@ public class UserService implements UserDetailsService {
         return userMapper.findByCreatedBy(username);
     }
 
+    public void updateBankDetails(User user){
+        userMapper.updateBankDetails(user);
+    }
+
+    public void updateProfileDetails(User user){
+        userMapper.updateProfileDetails(user);
+    }
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		Optional<User> userDetail = userMapper.findByIdentityNumber(username); 

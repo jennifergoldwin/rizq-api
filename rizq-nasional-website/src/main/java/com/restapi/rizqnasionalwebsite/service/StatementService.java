@@ -55,4 +55,8 @@ public class StatementService {
     public void deposit(Investment investment){
         statementMapper.deposit(investment);
     }
+
+    public void updateDeposit(Investment investment){
+        statementMapper.updateDeposit(investment);
+    }
 }

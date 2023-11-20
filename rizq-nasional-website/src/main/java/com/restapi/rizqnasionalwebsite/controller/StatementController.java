@@ -145,4 +145,17 @@ public class StatementController {
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }
     }
+
+    @PutMapping("/update-deposit")
+    public ResponseEntity<?> updateDeposit(@RequestBody Investment investment){
+         try {
+            statementService.updateDeposit(investment);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Deposit updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
 }

@@ -64,4 +64,8 @@ public interface StatementMapper {
     "dateWithdrawal = CURDATE() WHERE id = #{id}")
     void withdrawal(String id);
 
+    @Update("UPDATE investment SET totalDeposit = #{totalDeposit}, totalProfit = #{totalProfit} "+
+    "WHERE id = #{id}")
+    void updateDeposit(Investment investment);
+
 }
