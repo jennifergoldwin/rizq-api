@@ -20,7 +20,6 @@ import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
 import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
-import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;

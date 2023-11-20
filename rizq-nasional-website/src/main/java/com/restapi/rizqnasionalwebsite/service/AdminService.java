@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
-import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
 
 @Service
@@ -56,6 +55,8 @@ public class AdminService implements UserDetailsService {
     }
 
     public void update(Admin admin){
+        String hashedPassword = encoder.encode(admin.getPassword());
+        admin.setPassword(hashedPassword);
         adminMapper.update(admin);
     }
 }

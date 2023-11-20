@@ -13,7 +13,7 @@ public class StatementResponse extends Statement{
     private String userName;
 
     public StatementResponse(Statement statement, String userName) {
-        super(statement.getId(), statement.getDate(), statement.getUserIdentityNumber(),
+        super(statement.getId(), statement.getUserIdentityNumber(),  statement.getDate(),
                 statement.getProduct(), statement.getLeverage(), statement.getProfitLoss());
         this.userName = userName;
     }

@@ -28,7 +28,7 @@ public interface AdminMapper {
     @Delete("DELETE FROM admins WHERE username = #{username}")
     void delete(Admin admin);
 
-    @Update("UPDATE admins SET fullName = #{fullName}, username = #{username} "+
+    @Update("UPDATE admins SET fullName = #{fullName}, username = #{username}, "+
     "password = #{password} WHERE id = #{id}")
     void update(Admin admin);
 }
