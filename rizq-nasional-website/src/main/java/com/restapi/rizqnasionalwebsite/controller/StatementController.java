@@ -137,13 +137,8 @@ public class StatementController {
     @PutMapping("/withdrawl")
     public ResponseEntity<?> withdrawl(@RequestBody DepoWithdrawlRequest dw){
          try {
-<<<<<<< Updated upstream
-            statementService.withdrawal(id);
-            return ResponseEntity.status(HttpStatus.OK)
-=======
             statementService.withdrawal(dw);
             return ResponseEntity.status(HttpStatus.CREATED)
->>>>>>> Stashed changes
             .body(new CommonResponse<>(false, "Withdrawl requested", null));
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,15 +150,9 @@ public class StatementController {
     @PutMapping("/deposit")
     public ResponseEntity<?> updateDeposit(@RequestBody DepoWithdrawlRequest dw){
          try {
-<<<<<<< Updated upstream
-            statementService.updateDeposit(investment);
-            return ResponseEntity.status(HttpStatus.OK)
-            .body(new CommonResponse<>(false, "Deposit updated", null));
-=======
             statementService.updateDeposit(dw);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Deposit success", null));
->>>>>>> Stashed changes
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
