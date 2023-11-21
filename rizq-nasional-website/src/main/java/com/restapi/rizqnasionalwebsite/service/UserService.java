@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
+import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
+import com.restapi.rizqnasionalwebsite.mapper.StatementMapper;
 import com.restapi.rizqnasionalwebsite.mapper.UserMapper;
 
 @Service
@@ -26,10 +28,13 @@ public class UserService implements UserDetailsService {
     @Autowired
 	private AdminMapper adminMapper; 
 
+    @Autowired
+	private StatementMapper statementMapper; 
+
 	@Autowired
 	private PasswordEncoder encoder; 
 
-	public User registerUser(User user) {
+	public User registerUser(User user, Investment investment) {
         // Hash the password before saving to the database
         String hashedPassword = encoder.encode(user.getPassword());
         user.setPassword(hashedPassword);
@@ -37,6 +42,7 @@ public class UserService implements UserDetailsService {
         // Save the user to the database
         userMapper.save(user);
 
+        statementMapper.deposit(investment);
         return user;
     }
 

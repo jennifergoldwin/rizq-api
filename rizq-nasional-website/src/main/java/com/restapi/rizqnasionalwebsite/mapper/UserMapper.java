@@ -49,15 +49,17 @@ public interface UserMapper {
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
-            "IFNULL(SUM(CASE WHEN i.statuswithdrawal = 'false' THEN i.totalDeposit ELSE 0 END), 0) AS totalDeposit, " + 
+            "i.totalDeposit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 
             "LEFT JOIN " + 
             "investment i ON u.identityNumber = i.userIdentityNumber " + 
-            "WHERE u.createdby = #{username} " +
-            "GROUP BY " + 
-            "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby")
+            "WHERE u.createdby = #{username} " 
+            // +
+            // "GROUP BY " + 
+            // "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby"
+            )
     @Results({
         @Result(property = "identityNumber", column = "identityNumber"),
         @Result(property = "fullName", column = "fullName"),

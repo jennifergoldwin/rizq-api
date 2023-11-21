@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -60,12 +61,16 @@ public interface StatementMapper {
     "#{totalDeposit}, #{totalProfit}, #{statusDeposit}, #{statusWithdrawal})")
     void deposit(Investment investment);
 
-    @Update("UPDATE investment SET statusWithdrawal = 'true', "+
-    "dateWithdrawal = CURDATE() WHERE id = #{id}")
-    void withdrawal(String id);
+    @Update("UPDATE investment SET statusWithdrawal = 'true', " +
+    "dateWithdrawal = NOW(), totalDeposit = totalDeposit - #{totalDeposit}, " +
+    "totalProfit = totalProfit - #{totalProfit} " +
+    "WHERE userIdentityNumber = #{userIdentityNumber} AND totalDeposit >= #{totalDeposit} " +
+    "AND totalProfit >= #{totalProfit}")
+    void withdrawal(DepoWithdrawlRequest dw);
 
-    @Update("UPDATE investment SET totalDeposit = #{totalDeposit}, totalProfit = #{totalProfit} "+
-    "WHERE id = #{id}")
-    void updateDeposit(Investment investment);
+
+    @Update("UPDATE investment SET totalDeposit = #{totalDeposit}, totalProfit = #{totalProfit}, "+
+    "dateDeposit = NOW() WHERE userIdentityNumber = #{userIdentityNumber}")
+    void updateDeposit(DepoWithdrawlRequest dw);
 
 }

@@ -20,11 +20,13 @@ import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
 import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
+import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
 @RestController
@@ -38,6 +40,9 @@ public class AuthenticationController {
 
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private StatementService statementService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -113,7 +118,10 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CommonResponse<>(true, "User with this identity number already exists", null));
             }
-            userService.registerUser(user);
+            int lenInv = statementService.getAllInvestment().size()+1;
+            String idInv = "INV00" + lenInv;
+            Investment inv = new Investment(idInv, user.getIdentityNumber(), null, null, 0, 0, "Done", "false");
+            userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "User created", user));
         } catch (Exception e) {

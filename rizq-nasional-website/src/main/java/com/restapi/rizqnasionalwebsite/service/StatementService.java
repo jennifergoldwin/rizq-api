@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -48,15 +49,15 @@ public class StatementService {
         return statementMapper.getAllInvestmentUser(id);
     }
 
-    public void withdrawal(String id){
-        statementMapper.withdrawal(id);
+    public void withdrawal(DepoWithdrawlRequest dw){
+        statementMapper.withdrawal(dw);
     }
 
     public void deposit(Investment investment){
         statementMapper.deposit(investment);
     }
 
-    public void updateDeposit(Investment investment){
-        statementMapper.updateDeposit(investment);
+    public void updateDeposit(DepoWithdrawlRequest dw){
+        statementMapper.updateDeposit(dw);
     }
 }

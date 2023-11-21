@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -114,30 +115,35 @@ public class StatementController {
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
       }
     }
-    @PostMapping("/deposit")
-    public ResponseEntity<?> deposit(@RequestBody Investment investment){
-        try {
-            //add to investment
-            int lenInv = statementService.getAllInvestment().size()+1;
-            String idInv = "INV00" + lenInv;
-            investment.setId(idInv);
-            statementService.deposit(investment);
+    // @PostMapping("/deposit")
+    // public ResponseEntity<?> deposit(@RequestBody Investment investment){
+    //     try {
+    //         //add to investment
+    //         int lenInv = statementService.getAllInvestment().size()+1;
+    //         String idInv = "INV00" + lenInv;
+    //         investment.setId(idInv);
+    //         statementService.deposit(investment);
 
-            return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Deposit success", null));
+    //         return ResponseEntity.status(HttpStatus.CREATED)
+    //         .body(new CommonResponse<>(false, "Deposit success", null));
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
-        }
-    }
+    //     } catch (Exception e) {
+    //         e.printStackTrace();
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    //                 .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+    //     }
+    // }
 
-    @PutMapping("/withdrawl/{id}")
-    public ResponseEntity<?> withdrawl(@PathVariable String id){
+    @PutMapping("/withdrawl")
+    public ResponseEntity<?> withdrawl(@RequestBody DepoWithdrawlRequest dw){
          try {
+<<<<<<< Updated upstream
             statementService.withdrawal(id);
             return ResponseEntity.status(HttpStatus.OK)
+=======
+            statementService.withdrawal(dw);
+            return ResponseEntity.status(HttpStatus.CREATED)
+>>>>>>> Stashed changes
             .body(new CommonResponse<>(false, "Withdrawl requested", null));
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,12 +152,18 @@ public class StatementController {
         }
     }
 
-    @PutMapping("/update-deposit")
-    public ResponseEntity<?> updateDeposit(@RequestBody Investment investment){
+    @PutMapping("/deposit")
+    public ResponseEntity<?> updateDeposit(@RequestBody DepoWithdrawlRequest dw){
          try {
+<<<<<<< Updated upstream
             statementService.updateDeposit(investment);
             return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Deposit updated", null));
+=======
+            statementService.updateDeposit(dw);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Deposit success", null));
+>>>>>>> Stashed changes
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
