@@ -15,16 +15,16 @@ import com.restapi.rizqnasionalwebsite.entity.Portfolio;
 public interface PortfolioMapper {
     
     @Select("SELECT "+
-    "COUNT(*) AS total_investment, "+
-    "SUM(totalDeposit) AS total_deposit, "+
-    "SUM(totalProfit) AS total_profit "+
+    // "COUNT(*) AS total_investment, "+
+    "i.totalDeposit AS total_deposit, "+
+    "i.totalProfit AS total_profit "+
     "FROM "+
-    "investment "+
+    "investment i "+
     "WHERE "+
-    "userIdentityNumber = #{identityNumber} "+
-    "AND statusWithdrawal = 'false'")
+    "i.userIdentityNumber = #{identityNumber}"
+    )
     @Results({
-        @Result(property = "total_investment", column = "total_investment"),
+        // @Result(property = "total_investment", column = "total_investment"),
         @Result(property = "total_deposit", column = "total_deposit"),
         @Result(property = "total_profit", column = "total_profit")
     })
