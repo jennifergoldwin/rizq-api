@@ -3,6 +3,7 @@ package com.restapi.rizqnasionalwebsite.mapper;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -85,4 +86,7 @@ public interface UserMapper {
     @Update("UPDATE users SET fullName = #{fullName}, email = #{email}, "+
     "phoneNumber = #{phoneNumber}, password = #{password} WHERE identityNumber = #{identityNumber}")
     void updateUser(EditUserRequest user);
+
+    @Delete("DELETE FROM users WHERE identityNumber = #{id}")
+    void delete(String id);
 }

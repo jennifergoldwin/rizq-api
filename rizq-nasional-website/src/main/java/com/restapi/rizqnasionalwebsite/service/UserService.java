@@ -14,6 +14,7 @@ import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
 import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
+import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
@@ -80,6 +81,10 @@ public class UserService implements UserDetailsService {
         return userDetail.map(AuthUserDetails::new) 
                 .orElseThrow(() -> new UsernameNotFoundException("User not found " + username));
 	}
+
+     public void deleteUser(String id) {
+        userMapper.delete(id);
+    }
 
 } 
 

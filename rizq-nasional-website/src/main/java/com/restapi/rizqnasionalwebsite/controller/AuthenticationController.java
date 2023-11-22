@@ -237,4 +237,18 @@ public class AuthenticationController {
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }
     }
+
+    @DeleteMapping("/delete-user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        try {
+            // Check if the user with the provided identityNumber already exists
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "User deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
 }
