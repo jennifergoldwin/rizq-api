@@ -20,6 +20,7 @@ import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
 import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
@@ -216,6 +217,19 @@ public class AuthenticationController {
             userService.updateProfileDetails(user);
             return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "Profile updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/update-user")
+    public ResponseEntity<?> updateUser(@RequestBody EditUserRequest user){
+         try {
+            userService.updateUser(user);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "User updated", null));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

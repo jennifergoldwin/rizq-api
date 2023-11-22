@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 
@@ -80,4 +81,8 @@ public interface UserMapper {
     @Update("UPDATE users SET state = #{state}, city = #{city}, "+
     "address = #{address}, postCode = #{postCode}, occupation = #{occupation} WHERE identityNumber = #{identityNumber}")
     void updateProfileDetails(User user);
+
+    @Update("UPDATE users SET fullName = #{fullName}, email = #{email}, "+
+    "phoneNumber = #{phoneNumber}, password = #{password} WHERE identityNumber = #{identityNumber}")
+    void updateUser(EditUserRequest user);
 }

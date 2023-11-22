@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
+import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
@@ -64,6 +65,10 @@ public class UserService implements UserDetailsService {
 
     public void updateProfileDetails(User user){
         userMapper.updateProfileDetails(user);
+    }
+
+    public void updateUser(EditUserRequest user){
+        userMapper.updateUser(user);
     }
 
 	@Override
