@@ -68,6 +68,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateUser(EditUserRequest user){
+        String hashedPassword = encoder.encode(user.getPassword());
+        user.setPassword(hashedPassword);
         userMapper.updateUser(user);
     }
 

@@ -227,6 +227,7 @@ public class AuthenticationController {
     @PutMapping("/update-user")
     public ResponseEntity<?> updateUser(@RequestBody EditUserRequest user){
          try {
+            
             userService.updateUser(user);
             return ResponseEntity.status(HttpStatus.OK)
             .body(new CommonResponse<>(false, "User updated", null));
