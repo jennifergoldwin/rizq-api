@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 
 public class EditUserRequest {
+    private String id;
     private String identityNumber;
     private String fullName;
     private String phoneNumber;

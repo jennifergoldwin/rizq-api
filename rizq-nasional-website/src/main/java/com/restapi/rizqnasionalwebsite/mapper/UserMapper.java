@@ -23,35 +23,43 @@ public interface UserMapper {
     Optional<User> findByIdentityNumber(String identityNumber);
 
     @Select("SELECT " + 
+            "u.id," + 
             "u.identityNumber," + 
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
-            "IFNULL(SUM(i.totalDeposit), 0) AS totalDeposit, " + 
+            "i.totalDeposit, " + 
+            "i.totalProfit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 
             "LEFT JOIN " + 
             "investment i ON u.identityNumber = i.userIdentityNumber " + 
             " JOIN admins a ON a.username = u.createdby "+
-            "WHERE a.createdby = #{username} " +
-            "GROUP BY " + 
-            "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby")
+            "WHERE a.createdby = #{username} or a.username = #{username}" 
+            // +"GROUP BY " + 
+            // "u.id, u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby"
+            )
     @Results({
+        @Result(property = "id", column = "id"),
         @Result(property = "identityNumber", column = "identityNumber"),
         @Result(property = "fullName", column = "fullName"),
         @Result(property = "email", column = "email"),
         @Result(property = "phoneNumber", column = "phoneNumber"),
+        @Result(property = "totalDeposit", column = "totalDeposit"),
+        @Result(property = "totalProfit", column = "totalProfit"),
         @Result(property = "createdby", column = "createdby")
     })
     List<UserInfoAdmin> findByCreatedByMasterRole(String username);
 
     @Select("SELECT " + 
+            "u.id," + 
             "u.identityNumber," + 
             "u.fullName, " + 
             "u.email, " + 
             "u.phoneNumber, " + 
             "i.totalDeposit, " + 
+            "i.totalProfit, " + 
             "u.createdby " + 
             "FROM " + 
             "users u " + 
@@ -63,10 +71,13 @@ public interface UserMapper {
             // "u.identityNumber, u.fullName, u.email, u.phoneNumber, u.createdby"
             )
     @Results({
+        @Result(property = "id", column = "id"),
         @Result(property = "identityNumber", column = "identityNumber"),
         @Result(property = "fullName", column = "fullName"),
         @Result(property = "email", column = "email"),
         @Result(property = "phoneNumber", column = "phoneNumber"),
+        @Result(property = "totalDeposit", column = "totalDeposit"),
+        @Result(property = "totalProfit", column = "totalProfit"),
         @Result(property = "createdby", column = "createdby")
     })
     List<UserInfoAdmin> findByCreatedBy(String username);
@@ -84,7 +95,7 @@ public interface UserMapper {
     void updateProfileDetails(User user);
 
     @Update("UPDATE users SET fullName = #{fullName}, email = #{email}, "+
-    "phoneNumber = #{phoneNumber}, password = #{password} WHERE identityNumber = #{identityNumber}")
+    "phoneNumber = #{phoneNumber}, password = #{password}, identityNumber = #{identityNumber} WHERE id = #{id}")
     void updateUser(EditUserRequest user);
 
     @Delete("DELETE FROM users WHERE identityNumber = #{id}")
