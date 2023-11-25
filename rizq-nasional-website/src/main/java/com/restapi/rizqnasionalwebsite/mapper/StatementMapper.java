@@ -31,6 +31,9 @@ public interface StatementMapper {
     "profitLoss = #{profitLoss} WHERE id = #{id}")
     void updateStatement(Statement statement);
 
+    @Delete("DELETE FROM statement WHERE id = #{id}")
+    void deleteStatement(Statement statement);
+
     //get list statement by userIdentityNumber
     @Select("SELECT s.id, u.fullName as userName, "+
     "s.userIdentityNumber, s.date, s.product, s.leverage, s.profitLoss "+
@@ -43,7 +46,8 @@ public interface StatementMapper {
     @Select("SELECT s.id, u.fullName as userName, "+
     "s.userIdentityNumber, s.date, s.product, s.leverage, s.profitLoss "+
      "FROM statement s LEFT JOIN users u ON s.userIdentityNumber = u.identityNumber "+
-     "WHERE u.createdby = #{username}"
+     " JOIN admins a ON a.username = u.createdby "+
+     "WHERE u.createdby = #{username} or a.username = #{username}"
      )
     List<StatementResponse> getListStatementbyAdmin(String username);
 

@@ -100,6 +100,20 @@ public class StatementController {
         }
     }
 
+    @DeleteMapping("/delete-statement")
+    public ResponseEntity<?> deleteStatement(@RequestBody Statement statement) {
+        try {
+            // Check if the user with the provided identityNumber already exists
+            statementService.deleteStatement(statement);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Statement deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     @GetMapping("/investment/{id}")
     public ResponseEntity<?> getAllInvestmentUser(@PathVariable String id){
         try {

@@ -30,6 +30,10 @@ public class StatementService {
         statementMapper.updateStatement(statement);
     }
 
+    public void deleteStatement(Statement statement){
+        statementMapper.deleteStatement(statement);
+    }
+
     //get list statement by userIdentityNumber
     public List<StatementResponse> getStatementByUser(String identityNumber) {
         return statementMapper.getListStatementbyUser(identityNumber);
