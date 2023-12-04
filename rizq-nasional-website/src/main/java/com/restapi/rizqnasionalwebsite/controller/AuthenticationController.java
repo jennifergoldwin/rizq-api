@@ -1,6 +1,7 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -120,7 +121,7 @@ public class AuthenticationController {
                         .body(new CommonResponse<>(true, "User with this identity number already exists", null));
             }
             int lenInv = statementService.getAllInvestment().size()+1;
-            String idInv = "INV00" + lenInv;
+            String idInv = "INV-" + UUID.randomUUID();
             Investment inv = new Investment(idInv, user.getIdentityNumber(), null, null, 0, 0, "Done", "false");
             userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)

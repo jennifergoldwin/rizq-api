@@ -2,6 +2,7 @@ package com.restapi.rizqnasionalwebsite.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -33,6 +34,9 @@ public interface StatementMapper {
 
     @Delete("DELETE FROM statement WHERE id = #{id}")
     void deleteStatement(Statement statement);
+
+    @Delete("DELETE FROM statement WHERE userIdentityNumber = #{id}")
+    void deleteStatementICNumber(String id);
 
     //get list statement by userIdentityNumber
     @Select("SELECT s.id, u.fullName as userName, "+
@@ -76,5 +80,8 @@ public interface StatementMapper {
     @Update("UPDATE investment SET totalDeposit = #{totalDeposit}, totalProfit = #{totalProfit}, "+
     "dateDeposit = NOW() WHERE userIdentityNumber = #{userIdentityNumber}")
     void updateDeposit(DepoWithdrawlRequest dw);
+
+    @Delete("DELETE FROM investment WHERE userIdentityNumber = #{id}")
+    void deleteInvestment(String id);
 
 }

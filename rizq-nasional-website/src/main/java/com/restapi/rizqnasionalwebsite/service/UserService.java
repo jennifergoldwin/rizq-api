@@ -83,6 +83,8 @@ public class UserService implements UserDetailsService {
 
      public void deleteUser(String id) {
         userMapper.delete(id);
+        statementMapper.deleteInvestment(id);
+        statementMapper.deleteStatementICNumber(id);
     }
 
 } 
