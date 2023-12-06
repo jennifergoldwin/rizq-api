@@ -28,7 +28,7 @@ import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
-import com.restapi.rizqnasionalwebsite.service.StatementService;
+// import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
 @RestController
@@ -43,8 +43,8 @@ public class AuthenticationController {
     @Autowired
     private AdminService adminService;
 
-    @Autowired
-    private StatementService statementService;
+    // @Autowired
+    // private StatementService statementService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -120,12 +120,12 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CommonResponse<>(true, "User with this identity number already exists", null));
             }
-            int lenInv = statementService.getAllInvestment().size()+1;
+            // int lenInv = statementService.getAllInvestment().size()+1;
             String idInv = "INV-" + UUID.randomUUID();
             Investment inv = new Investment(idInv, user.getIdentityNumber(), null, null, 0, 0, "Done", "false");
             userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "User created", user));
+            .body(new CommonResponse<>(false, "User created", userService.getUserByIdentityNumber(user.getIdentityNumber())));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

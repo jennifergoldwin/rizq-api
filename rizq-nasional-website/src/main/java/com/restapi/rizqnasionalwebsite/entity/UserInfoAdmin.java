@@ -16,5 +16,7 @@ public class UserInfoAdmin {
     private String totalDeposit;
     private String totalProfit;
     private String createdby;
+    private String remark;
+    private String registrationDate;
     
 }

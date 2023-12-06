@@ -30,7 +30,7 @@ public interface UserMapper {
             "u.phoneNumber, " + 
             "i.totalDeposit, " + 
             "i.totalProfit, " + 
-            "u.createdby " + 
+            "u.createdby, u.remark, u.registrationDate " + 
             "FROM " + 
             "users u " + 
             "LEFT JOIN " + 
@@ -48,7 +48,9 @@ public interface UserMapper {
         @Result(property = "phoneNumber", column = "phoneNumber"),
         @Result(property = "totalDeposit", column = "totalDeposit"),
         @Result(property = "totalProfit", column = "totalProfit"),
-        @Result(property = "createdby", column = "createdby")
+        @Result(property = "createdby", column = "createdby"),
+        @Result(property = "remark", column = "remark"),
+        @Result(property = "registrationDate", column = "registrationDate")
     })
     List<UserInfoAdmin> findByCreatedByMasterRole(String username);
 
@@ -60,7 +62,7 @@ public interface UserMapper {
             "u.phoneNumber, " + 
             "i.totalDeposit, " + 
             "i.totalProfit, " + 
-            "u.createdby " + 
+            "u.createdby, u.remark, u.registrationDate " + 
             "FROM " + 
             "users u " + 
             "LEFT JOIN " + 
@@ -78,11 +80,13 @@ public interface UserMapper {
         @Result(property = "phoneNumber", column = "phoneNumber"),
         @Result(property = "totalDeposit", column = "totalDeposit"),
         @Result(property = "totalProfit", column = "totalProfit"),
-        @Result(property = "createdby", column = "createdby")
+        @Result(property = "createdby", column = "createdby"),
+        @Result(property = "remark", column = "remark"),
+        @Result(property = "registrationDate", column = "registrationDate")
     })
     List<UserInfoAdmin> findByCreatedBy(String username);
 
-    @Insert("INSERT INTO users(fullName, identityNumber, phoneNumber, email, state, city, address, postCode, occupation, bankName, bankAccountNumber, bankHolderName, password, role, createdby) VALUES(#{fullName}, #{identityNumber},#{phoneNumber}, #{email}, #{state}, #{city}, #{address}, #{postCode}, #{occupation}, #{bankName}, #{bankAccountNumber}, #{bankHolderName}, #{password}, #{role}, #{createdby})")
+    @Insert("INSERT INTO users(fullName, identityNumber, phoneNumber, email, state, city, address, postCode, occupation, bankName, bankAccountNumber, bankHolderName, password, role, createdby, remark, registrationDate) VALUES(#{fullName}, #{identityNumber},#{phoneNumber}, #{email}, #{state}, #{city}, #{address}, #{postCode}, #{occupation}, #{bankName}, #{bankAccountNumber}, #{bankHolderName}, #{password}, #{role}, #{createdby}, #{remark}, #{registrationDate})")
     @Options(useGeneratedKeys = true, keyProperty = "id", keyColumn = "id")
     void save(User user);
 
@@ -95,7 +99,7 @@ public interface UserMapper {
     void updateProfileDetails(User user);
 
     @Update("UPDATE users SET fullName = #{fullName}, email = #{email}, "+
-    "phoneNumber = #{phoneNumber}, password = #{password}, identityNumber = #{identityNumber} WHERE id = #{id}")
+    "phoneNumber = #{phoneNumber}, password = #{password}, identityNumber = #{identityNumber}, remark = #{remark}, registrationDate = #{registrationDate} WHERE id = #{id}")
     void updateUser(EditUserRequest user);
 
     @Delete("DELETE FROM users WHERE identityNumber = #{id}")
