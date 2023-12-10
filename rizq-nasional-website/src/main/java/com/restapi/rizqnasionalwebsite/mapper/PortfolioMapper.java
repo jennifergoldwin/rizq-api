@@ -17,7 +17,7 @@ public interface PortfolioMapper {
     @Select("SELECT "+
     // "COUNT(*) AS total_investment, "+
     "i.totalDeposit AS total_deposit, "+
-    "i.totalProfit AS total_profit "+
+    "i.totalProfit AS total_profit, "+
     "i.dateDeposit AS last_update "+
     "FROM "+
     "investment i "+
