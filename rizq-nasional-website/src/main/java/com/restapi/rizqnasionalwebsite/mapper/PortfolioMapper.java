@@ -18,6 +18,7 @@ public interface PortfolioMapper {
     // "COUNT(*) AS total_investment, "+
     "i.totalDeposit AS total_deposit, "+
     "i.totalProfit AS total_profit "+
+    "i.dateDeposit AS last_update "+
     "FROM "+
     "investment i "+
     "WHERE "+
@@ -26,7 +27,8 @@ public interface PortfolioMapper {
     @Results({
         // @Result(property = "total_investment", column = "total_investment"),
         @Result(property = "total_deposit", column = "total_deposit"),
-        @Result(property = "total_profit", column = "total_profit")
+        @Result(property = "total_profit", column = "total_profit"),
+        @Result(property = "last_update", column = "last_update")
     })
     Optional<Portfolio> getUserPortfolio(String identityNumber);
 
