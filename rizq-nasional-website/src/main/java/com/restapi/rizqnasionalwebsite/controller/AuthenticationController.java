@@ -1,5 +1,7 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -122,7 +124,7 @@ public class AuthenticationController {
             }
             // int lenInv = statementService.getAllInvestment().size()+1;
             String idInv = "INV-" + UUID.randomUUID();
-            Investment inv = new Investment(idInv, user.getIdentityNumber(), null, null, 0, 0, "Done", "false");
+            Investment inv = new Investment(idInv, user.getIdentityNumber(), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()), null, 0, 0, "Done", "false");
             userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "User created", userService.getUserByIdentityNumber(user.getIdentityNumber())));
