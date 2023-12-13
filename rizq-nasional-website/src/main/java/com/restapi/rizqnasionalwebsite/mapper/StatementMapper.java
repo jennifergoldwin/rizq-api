@@ -70,7 +70,7 @@ public interface StatementMapper {
     void deposit(Investment investment);
 
     @Update("UPDATE investment SET statusWithdrawal = 'true', " +
-    "dateWithdrawal = NOW(), totalDeposit = totalDeposit - #{totalDeposit}, " +
+    "dateWithdrawal = CONVERT_TZ(NOW(), 'UTC', 'Asia/Kuala_Lumpur'), totalDeposit = totalDeposit - #{totalDeposit}, " +
     "totalProfit = totalProfit - #{totalProfit} " +
     "WHERE userIdentityNumber = #{userIdentityNumber} AND totalDeposit >= #{totalDeposit} " +
     "AND totalProfit >= #{totalProfit}")
@@ -78,7 +78,7 @@ public interface StatementMapper {
 
 
     @Update("UPDATE investment SET totalDeposit = #{totalDeposit}, totalProfit = #{totalProfit}, "+
-    "dateDeposit = NOW() WHERE userIdentityNumber = #{userIdentityNumber}")
+    "dateDeposit = CONVERT_TZ(NOW(), 'UTC', 'Asia/Kuala_Lumpur') WHERE userIdentityNumber = #{userIdentityNumber}")
     void updateDeposit(DepoWithdrawlRequest dw);
 
     @Delete("DELETE FROM investment WHERE userIdentityNumber = #{id}")

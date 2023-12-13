@@ -1,7 +1,8 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -124,7 +125,21 @@ public class AuthenticationController {
             }
             // int lenInv = statementService.getAllInvestment().size()+1;
             String idInv = "INV-" + UUID.randomUUID();
-            Investment inv = new Investment(idInv, user.getIdentityNumber(), new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())), null, 0, 0, "Done", "false");
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedMalaysiaTime = malaysiaTime.format(formatter);
+            Investment inv = new Investment(idInv, user.getIdentityNumber(), formattedMalaysiaTime, null, 0, 0, "Done", "false");
             userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "User created", userService.getUserByIdentityNumber(user.getIdentityNumber())));
