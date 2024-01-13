@@ -9,6 +9,7 @@ import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
+import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
 import com.restapi.rizqnasionalwebsite.mapper.StatementMapper;
 
 @Service
@@ -45,6 +46,9 @@ public class StatementService {
     }
 
     //--------------INVESTMENT------------//
+    public void updateICNumberInvestment(UserICChangeRequest icChangeRequest){
+        statementMapper.updateICNumberInvestment(icChangeRequest);
+    }
     public List<Investment> getAllInvestment() {
         return statementMapper.getAllInvestment();
     }

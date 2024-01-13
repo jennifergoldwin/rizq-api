@@ -22,6 +22,7 @@ import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
+import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
@@ -169,6 +170,19 @@ public class StatementController {
             statementService.updateDeposit(dw);
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Deposit success", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/updateICNumber")
+    public ResponseEntity<?> updateICNumber(@RequestBody UserICChangeRequest iChangeRequest){
+         try {
+            statementService.updateICNumberInvestment(iChangeRequest);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Updare IC Number success", null));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

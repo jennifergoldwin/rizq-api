@@ -164,7 +164,7 @@ public class AuthenticationController {
 
             String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
             return ResponseEntity.ok(new CommonResponse<>(false, "success",
-                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName(),user.getRole())));
+                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName(),user.getRole(),user.getStatus())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));

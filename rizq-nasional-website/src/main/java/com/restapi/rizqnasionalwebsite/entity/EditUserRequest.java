@@ -16,4 +16,5 @@ public class EditUserRequest {
     private String password;
     private String remark;
     private String registrationDate;
+    private String status;
 }

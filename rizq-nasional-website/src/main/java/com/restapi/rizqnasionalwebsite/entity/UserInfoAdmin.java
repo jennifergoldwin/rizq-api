@@ -18,5 +18,7 @@ public class UserInfoAdmin {
     private String createdby;
     private String remark;
     private String registrationDate;
+    private String status;
+    private String password;
     
 }

@@ -28,6 +28,7 @@ public class User {
     private String createdby;
     private String remark;
     private String registrationDate;
+    private String status;
 }
 
 

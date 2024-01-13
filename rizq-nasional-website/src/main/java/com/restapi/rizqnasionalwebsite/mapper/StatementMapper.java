@@ -12,6 +12,7 @@ import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
+import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
 
 @Mapper
 public interface StatementMapper {
@@ -83,5 +84,8 @@ public interface StatementMapper {
 
     @Delete("DELETE FROM investment WHERE userIdentityNumber = #{id}")
     void deleteInvestment(String id);
+    
+    @Update("UPDATE investment SET userIdentityNumber = #{icNumberNew} WHERE userIdentityNumber = #{icNumberOld}")
+    void updateICNumberInvestment(UserICChangeRequest icNumberReq);
 
 }
