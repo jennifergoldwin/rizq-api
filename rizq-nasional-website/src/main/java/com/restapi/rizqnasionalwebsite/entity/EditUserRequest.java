@@ -1,5 +1,4 @@
 package com.restapi.rizqnasionalwebsite.entity;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,18 +6,15 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfoAdmin {
+
+public class EditUserRequest {
     private String id;
     private String identityNumber;
     private String fullName;
-    private String email;
     private String phoneNumber;
-    private String totalDeposit;
-    private String totalProfit;
-    private String createdby;
+    private String email;
+    private String password;
     private String remark;
     private String registrationDate;
     private String status;
-    private String password;
-    
 }

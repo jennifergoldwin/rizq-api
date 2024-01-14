@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Stock {
-    private String id;
-    private String stockName;
-    private int currPrice;
+public class DepoWithdrawlRequest {
+    private String userIdentityNumber;
+    private String totalDeposit;
+    private String totalProfit;
 }

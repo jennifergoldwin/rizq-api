@@ -5,10 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.restapi.rizqnasionalwebsite.entity.Plan;
+import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
+import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
-import com.restapi.rizqnasionalwebsite.entity.StockHolding;
+import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
 import com.restapi.rizqnasionalwebsite.mapper.StatementMapper;
 
 @Service
@@ -16,32 +17,55 @@ public class StatementService {
     @Autowired
 	private StatementMapper statementMapper;
 
-    public List<StatementResponse> getStatementByIdentityNumber(String identityNumber) {
-        return statementMapper.getUserStatement(identityNumber);
+    public List<Statement> getAllStatement() {
+        return statementMapper.getAllStatement();
     }
 
-    public void addStatement(Statement statement){
-        statementMapper.saveStatement(statement);
+    //add statement
+    public Statement addStatement(Statement statement){
+        statementMapper.addStatement(statement);
+        return statement;
+    }
+    //update statement
+    public void updateStatement(Statement statement){
+        statementMapper.updateStatement(statement);
     }
 
-    public void updatedStatement(String id){
-        statementMapper.updateStatusWithdrawal(id);
+    public void deleteStatement(Statement statement){
+        statementMapper.deleteStatement(statement);
     }
 
-    public List<Statement> getAllStatements() {
-        return statementMapper.getAllStatements();
+    //get list statement by userIdentityNumber
+    public List<StatementResponse> getStatementByUser(String identityNumber) {
+        return statementMapper.getListStatementbyUser(identityNumber);
     }
 
-    public List<Plan> getAllPlan() {
-        return statementMapper.getAllPlan();
+    //get liststatement by user under one admin
+    public List<StatementResponse> getStatementByAdmin(String username) {
+        return statementMapper.getListStatementbyAdmin(username);
     }
 
-    public List<StockHolding> getAllHolding() {
-        return statementMapper.getAllHolding();
+    //--------------INVESTMENT------------//
+    public void updateICNumberInvestment(UserICChangeRequest icChangeRequest){
+        statementMapper.updateICNumberInvestment(icChangeRequest);
+    }
+    public List<Investment> getAllInvestment() {
+        return statementMapper.getAllInvestment();
     }
 
-    public void addHolding(StockHolding stockHolding){
-        statementMapper.saveHolding(stockHolding);
+    public List<Investment> getAllInvestmentUser(String id){
+        return statementMapper.getAllInvestmentUser(id);
     }
-    
+
+    public void withdrawal(DepoWithdrawlRequest dw){
+        statementMapper.withdrawal(dw);
+    }
+
+    public void deposit(Investment investment){
+        statementMapper.deposit(investment);
+    }
+
+    public void updateDeposit(DepoWithdrawlRequest dw){
+        statementMapper.updateDeposit(dw);
+    }
 }

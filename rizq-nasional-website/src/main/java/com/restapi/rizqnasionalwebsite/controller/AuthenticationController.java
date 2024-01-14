@@ -1,14 +1,20 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,11 +24,14 @@ import com.restapi.rizqnasionalwebsite.entity.AuthAdminRequest;
 import com.restapi.rizqnasionalwebsite.entity.AuthAdminResponse;
 import com.restapi.rizqnasionalwebsite.entity.AuthRequest;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
+import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
+import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.AuthResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.JwtService;
+// import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
 
 @RestController
@@ -36,6 +45,9 @@ public class AuthenticationController {
 
     @Autowired
     private AdminService adminService;
+
+    // @Autowired
+    // private StatementService statementService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -111,9 +123,26 @@ public class AuthenticationController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                         .body(new CommonResponse<>(true, "User with this identity number already exists", null));
             }
-            userService.registerUser(user);
+            // int lenInv = statementService.getAllInvestment().size()+1;
+            String idInv = "INV-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String formattedMalaysiaTime = malaysiaTime.format(formatter);
+            Investment inv = new Investment(idInv, user.getIdentityNumber(), formattedMalaysiaTime, null, 0, 0, "Done", "false");
+            userService.registerUser(user,inv);
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "User created", user));
+            .body(new CommonResponse<>(false, "User created", userService.getUserByIdentityNumber(user.getIdentityNumber())));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -135,7 +164,7 @@ public class AuthenticationController {
 
             String jwt = jwtProvider.generateTokenWithIdentityNumber(authRequest.getIdentityNumber());
             return ResponseEntity.ok(new CommonResponse<>(false, "success",
-                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName(),user.getRole())));
+                    new AuthResponse(jwt, user.getIdentityNumber(), user.getFullName(),user.getRole(),user.getStatus())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
@@ -157,6 +186,85 @@ public class AuthenticationController {
             return ResponseEntity.ok(new CommonResponse<>(false, "success",
                     new AuthAdminResponse(jwt, admin.getUsername(), admin.getFullName(),admin.getRole())));
         } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/update-admin")
+    public ResponseEntity<?> updateAdmin(@RequestBody Admin admin){
+        try {
+            adminService.update(admin);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Admin updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+    @DeleteMapping("/delete-admin")
+    public ResponseEntity<?> deleteAdmin(@RequestBody Admin admin) {
+        try {
+            // Check if the user with the provided identityNumber already exists
+            adminService.delete(admin);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Admin deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+    @PutMapping("/update-bank")
+    public ResponseEntity<?> updateBankDetails(@RequestBody User user){
+        try {
+            userService.updateBankDetails(user);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Bank details updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/update-profile")
+    public ResponseEntity<?> updateProfileDetails(@RequestBody User user){
+         try {
+            userService.updateProfileDetails(user);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Profile updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PutMapping("/update-user")
+    public ResponseEntity<?> updateUser(@RequestBody EditUserRequest user){
+         try {
+            
+            userService.updateUser(user);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "User updated", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @DeleteMapping("/delete-user/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable String id) {
+        try {
+            // Check if the user with the provided identityNumber already exists
+            userService.deleteUser(id);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "User deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }

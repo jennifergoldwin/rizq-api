@@ -50,5 +50,13 @@ public class AdminService implements UserDetailsService {
                 .orElseThrow(() -> new UsernameNotFoundException("Admin not found " + username));
 	}
       
-    
+    public void delete(Admin admin) {
+        adminMapper.delete(admin);
+    }
+
+    public void update(Admin admin){
+        String hashedPassword = encoder.encode(admin.getPassword());
+        admin.setPassword(hashedPassword);
+        adminMapper.update(admin);
+    }
 }

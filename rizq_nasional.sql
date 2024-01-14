@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admins` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `fullName` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
@@ -44,11 +44,11 @@ INSERT INTO `admins` (`id`, `fullName`, `username`, `password`, `role`, `created
 CREATE TABLE `investment` (
   `id` varchar(10) NOT NULL,
   `userIdentityNumber` varchar(20) NOT NULL,
-  `date` date NOT NULL,
-  `dateWithdrawl` date DEFAULT NULL,
-  `planId` varchar(255) NOT NULL,
-  `amount` double NOT NULL,
-  `statusPlan` varchar(20) NOT NULL,
+  `dateDeposit` date NOT NULL,
+  `dateWithdrawal` date DEFAULT NULL,
+  `totalDeposit` double NOT NULL,
+  `totalProfit` double NOT NULL,
+  `statusDeposit` varchar(20) NOT NULL,
   `statusWithdrawal` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -67,27 +67,17 @@ INSERT INTO `plan` (`id`, `planType`, `interest`, `tenure`, `price`) VALUES
 ('PR001', 'Premium', 0.5, 300, 100),
 ('ST001', 'Standard', 0.4, 200, 200);
 
-
-CREATE TABLE `stockHolding` (
-  `id` varchar(100) NOT NULL,
-  `userIdentityNumber` varchar(100) NOT NULL,
-  `investmentId` varchar(100) NOT NULL,
-  `stockId` varchar(100) NOT NULL,
-  `purchasedPrice` int(11) NOT NULL,
-  `value` int(11) NOT NULL,
-  `purchasedDate` date NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-
-CREATE TABLE `stocks` (
-  `id` varchar(100) NOT NULL,
-  `stockName` varchar(100) NOT NULL,
-  `currPrice` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
+CREATE TABLE `statement`(
+  `id` varchar(10) NOT NULL,
+  `userIdentityNumber` varchar(20) NOT NULL,
+  `date` date NOT NULL,
+  `product` varchar(20) NOT NULL,
+  `leverage` varchar(20) NOT NULL,
+  `profitLoss` varchar(20) NOT NULL
+)
 
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `fullName` varchar(100) NOT NULL,
   `identityNumber` varchar(100) NOT NULL,
   `phoneNumber` varchar(100) NOT NULL,
@@ -115,18 +105,11 @@ ALTER TABLE `investment`
 ALTER TABLE `plan`
   ADD PRIMARY KEY (`id`);
 
-ALTER TABLE `stockholding`
-  ADD PRIMARY KEY (`id`);
-
-ALTER TABLE `stocks`
-  ADD PRIMARY KEY (`id`);
-
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
 
 ALTER TABLE `admins`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
 
 ALTER TABLE `users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;

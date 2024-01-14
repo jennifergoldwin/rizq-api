@@ -8,7 +8,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Portfolio {
-    private int total_investment;
+    // private int total_investment;
     private int total_deposit;
     private int total_profit;
+    private String last_update;
 }

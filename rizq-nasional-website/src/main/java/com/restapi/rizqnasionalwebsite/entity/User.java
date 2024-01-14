@@ -26,6 +26,9 @@ public class User {
     private String password;  
     private String role;
     private String createdby;
+    private String remark;
+    private String registrationDate;
+    private String status;
 }
 
 

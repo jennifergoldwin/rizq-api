@@ -1,21 +1,21 @@
 package com.restapi.rizqnasionalwebsite.entity;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class StatementResponse {
-    private String id;
-    private String date;
-    private String endDate;
-    private String dateWithdrawl;
-    private String planType;
-    private int tenure;
-    private double interest;
-    private double amount;
-    private String statusPlan;
-    private String statusWithdrawal;
+@EqualsAndHashCode(callSuper = true)
+public class StatementResponse extends Statement{
+    private String userName;
+
+    public StatementResponse(Statement statement, String userName) {
+        super(statement.getId(), statement.getUserIdentityNumber(),  statement.getDate(),
+                statement.getProduct(), statement.getLeverage(), statement.getProfitLoss());
+        this.userName = userName;
+    }
+   
 }

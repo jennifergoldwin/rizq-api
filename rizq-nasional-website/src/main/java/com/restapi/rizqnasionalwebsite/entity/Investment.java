@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-// @SuperBuilder
-public class Statement {
+public class Investment {
     private String id;
     private String userIdentityNumber;
-    private String date;
-    private String product;
-    private String leverage;
-    private String profitLoss;
-
-    
+    private String dateDeposit;
+    private String dateWithdrawal;
+    private double totalDeposit;
+    private double totalProfit;
+    private String statusDeposit;
+    private String statusWithdrawal;
 }
