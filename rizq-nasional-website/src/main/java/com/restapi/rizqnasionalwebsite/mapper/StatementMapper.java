@@ -94,10 +94,10 @@ public interface StatementMapper {
     @Insert("INSERT INTO history_statement(id, statementId, date, product, leverage, profitLoss) VALUES(#{id}, #{statementId}, #{date}, #{product}, #{leverage}, #{profitLoss})")
     void addHistoryStatement(HistoryStatement historyStatement);
 
-    @Insert("INSERT INTO history_deposit(id, userId, date, amount) VALUES(#{id}, #{userId}, #{date}, #{amount})")
+    @Insert("INSERT INTO history_deposit(id, userId, date, amountDeposit, amountProfit) VALUES(#{id}, #{userId}, #{date}, #{amountDeposit}, #{amountProfit})")
     void addHistoryDeposit(HistoryDeposit historyDeposit);
 
-    @Insert("INSERT INTO history_withdrawal(id, userId, date, amount) VALUES(#{id}, #{userId}, #{date}, #{amount})")
+    @Insert("INSERT INTO history_withdrawal(id, userId, date, amountDeposit, amountProfit) VALUES(#{id}, #{userId}, #{date}, #{amountDeposit}, #{amountProfit})")
     void addHistoryWithdrawal(HistoryWithdrawal historyWithdrawal);
 
 }
