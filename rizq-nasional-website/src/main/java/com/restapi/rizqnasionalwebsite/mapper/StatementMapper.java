@@ -9,6 +9,9 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
+import com.restapi.rizqnasionalwebsite.entity.HistoryDeposit;
+import com.restapi.rizqnasionalwebsite.entity.HistoryStatement;
+import com.restapi.rizqnasionalwebsite.entity.HistoryWithdrawal;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -87,5 +90,14 @@ public interface StatementMapper {
     
     @Update("UPDATE investment SET userIdentityNumber = #{icNumberNew} WHERE userIdentityNumber = #{icNumberOld}")
     void updateICNumberInvestment(UserICChangeRequest icNumberReq);
+
+    @Insert("INSERT INTO history_statement(id, statementId, date, product, leverage, profitLoss) VALUES(#{id}, #{statementId}, #{date}, #{product}, #{leverage}, #{profitLoss})")
+    void addHistoryStatement(HistoryStatement historyStatement);
+
+    @Insert("INSERT INTO history_deposit(id, userId, date, amount) VALUES(#{id}, #{userId}, #{date}, #{amount})")
+    void addHistoryDeposit(HistoryDeposit historyDeposit);
+
+    @Insert("INSERT INTO history_withdrawal(id, userId, date, amount) VALUES(#{id}, #{userId}, #{date}, #{amount})")
+    void addHistoryWithdrawal(HistoryWithdrawal historyWithdrawal);
 
 }

@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
+import com.restapi.rizqnasionalwebsite.entity.HistoryDeposit;
+import com.restapi.rizqnasionalwebsite.entity.HistoryStatement;
+import com.restapi.rizqnasionalwebsite.entity.HistoryWithdrawal;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -67,5 +70,17 @@ public class StatementService {
 
     public void updateDeposit(DepoWithdrawlRequest dw){
         statementMapper.updateDeposit(dw);
+    }
+
+    public void addHistoryStatement(HistoryStatement historyStatement){
+        statementMapper.addHistoryStatement(historyStatement);
+    }
+
+    public void addHistoryDeposit(HistoryDeposit historyDeposit){
+        statementMapper.addHistoryDeposit(historyDeposit);
+    }
+
+    public void addHistoryWithdrawal(HistoryWithdrawal historyWithdrawal){
+        statementMapper.addHistoryWithdrawal(historyWithdrawal);
     }
 }

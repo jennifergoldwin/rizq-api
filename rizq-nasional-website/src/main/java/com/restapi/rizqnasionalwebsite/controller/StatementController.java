@@ -1,5 +1,8 @@
 package com.restapi.rizqnasionalwebsite.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,6 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
 import com.restapi.rizqnasionalwebsite.entity.DepoWithdrawlRequest;
+import com.restapi.rizqnasionalwebsite.entity.HistoryDeposit;
+import com.restapi.rizqnasionalwebsite.entity.HistoryStatement;
+import com.restapi.rizqnasionalwebsite.entity.HistoryWithdrawal;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
@@ -74,6 +80,23 @@ public class StatementController {
             String idSt = "ST-" + UUID.randomUUID();
             statement.setId(idSt);
             statementService.addStatement(statement);
+
+            String idHistoryStatement = "HS-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            statementService.addHistoryStatement(new HistoryStatement(idHistoryStatement, statement.getId(), dateNow, statement.getProduct(), statement.getLeverage(), statement.getProfitLoss()));
             
             StatementResponse sr = new StatementResponse(statement,userService.getUserByIdentityNumber(statement.getUserIdentityNumber()).getFullName());
             
@@ -91,6 +114,22 @@ public class StatementController {
     public ResponseEntity<?> updateStatement(@RequestBody Statement statement){
         try {
             statementService.updateStatement(statement);
+            String idHistoryStatement = "HS-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            statementService.addHistoryStatement(new HistoryStatement(idHistoryStatement, statement.getId(), dateNow, statement.getProduct(), statement.getLeverage(), statement.getProfitLoss()));
             User us = userService.getUserByIdentityNumber(statement.getUserIdentityNumber());
             Admin admin = adminService.getAdminByUsername(us.getCreatedby());
             List<StatementResponse> statementList = statementService.getStatementByAdmin(admin.getUsername());
@@ -155,6 +194,22 @@ public class StatementController {
     public ResponseEntity<?> withdrawl(@RequestBody DepoWithdrawlRequest dw){
          try {
             statementService.withdrawal(dw);
+            String idHistoryWithdrawal = "HW-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            statementService.addHistoryWithdrawal(new HistoryWithdrawal(idHistoryWithdrawal, dw.getUserIdentityNumber(), dateNow, dw.getTotalDeposit(),dw.getTotalProfit()));
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Withdrawl requested", null));
         } catch (Exception e) {
@@ -168,6 +223,22 @@ public class StatementController {
     public ResponseEntity<?> updateDeposit(@RequestBody DepoWithdrawlRequest dw){
          try {
             statementService.updateDeposit(dw);
+            String idHistoryDeposit = "HD-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            statementService.addHistoryDeposit(new HistoryDeposit(idHistoryDeposit, dw.getUserIdentityNumber(), dateNow, dw.getTotalDeposit(),dw.getTotalProfit()));
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Deposit success", null));
         } catch (Exception e) {
