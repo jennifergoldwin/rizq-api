@@ -83,4 +83,8 @@ public class StatementService {
     public void addHistoryWithdrawal(HistoryWithdrawal historyWithdrawal){
         statementMapper.addHistoryWithdrawal(historyWithdrawal);
     }
+
+    public List<HistoryWithdrawal> getHistoryWithdrawals (String userId){
+        return statementMapper.getHistoryWithdrawal(userId);
+    }
 }

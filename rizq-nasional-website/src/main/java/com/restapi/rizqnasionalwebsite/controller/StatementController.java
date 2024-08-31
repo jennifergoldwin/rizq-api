@@ -32,6 +32,8 @@ import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/api/v1")
@@ -260,4 +262,21 @@ public class StatementController {
                     .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
         }
     }
+
+    @GetMapping("/withdrawal/{id}")
+    public ResponseEntity<?> getHistoryWithdrawal(@PathVariable String id){
+        try {
+        //   User user = userService.getUserByIdentityNumber(id);
+        //   if (user == null){
+        //       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true,"Invalid identity number",null));
+        //   }
+          
+          List<HistoryWithdrawal> listWithdrawal = statementService.getHistoryWithdrawals(id);
+          return ResponseEntity.ok(new CommonResponse<>(false, "success", listWithdrawal));
+      } catch (Exception e) {
+          e.printStackTrace(); 
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+      }
+    }
+    
 }

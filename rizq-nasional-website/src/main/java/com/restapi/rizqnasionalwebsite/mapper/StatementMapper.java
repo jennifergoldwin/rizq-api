@@ -100,4 +100,7 @@ public interface StatementMapper {
     @Insert("INSERT INTO history_withdrawal(id, userId, date, amountDeposit, amountProfit) VALUES(#{id}, #{userId}, #{date}, #{amountDeposit}, #{amountProfit})")
     void addHistoryWithdrawal(HistoryWithdrawal historyWithdrawal);
 
+    @Select("SELECT * FROM history_withdrawal WHERE userId = #{userId}")
+    List<HistoryWithdrawal> getHistoryWithdrawal(String userId);
+
 }
