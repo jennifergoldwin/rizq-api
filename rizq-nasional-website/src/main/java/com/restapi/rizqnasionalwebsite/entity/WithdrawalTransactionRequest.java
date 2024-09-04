@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WithdrawalTransactionRequest {
+    private String id;
     private String userId;
     private String status;
 }
