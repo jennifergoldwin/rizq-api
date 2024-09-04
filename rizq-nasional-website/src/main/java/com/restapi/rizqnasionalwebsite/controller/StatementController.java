@@ -331,7 +331,6 @@ public class StatementController {
             // int lenStatement = statementService.getAllStatement().size()+1;
             String idSt = "WT-" + UUID.randomUUID();
             wTransaction.setId(idSt);
-            statementService.addWithdrawalTransaction(wTransaction);
 
             // String idHistoryStatement = "HS-" + UUID.randomUUID();
             
@@ -354,7 +353,7 @@ public class StatementController {
             
 
             return ResponseEntity.status(HttpStatus.CREATED)
-            .body(new CommonResponse<>(false, "Statement added",null));
+            .body(new CommonResponse<>(false, "Withdrawal success",null));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
