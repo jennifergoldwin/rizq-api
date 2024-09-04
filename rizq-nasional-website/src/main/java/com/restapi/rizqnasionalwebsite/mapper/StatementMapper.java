@@ -120,7 +120,7 @@ public interface StatementMapper {
     List<WithdrawalTransaction> showWithdrawalTransaction (String userId);
 
     //for bo to show list withdrawal transaction
-    @Select("SELECT u.fullName, wt.userId, wt.amount, wt.date, wt.status FROM withdrawal_transaction wt LEFT JOIN users u WHERE u.identityNumber = wt.userId")
+    @Select("SELECT u.fullName, wt.userId, wt.amount, wt.date, wt.status FROM withdrawal_transaction wt LEFT JOIN users u ON u.identityNumber = wt.userId")
     List<WithdrawalTransactionResponse> showUserWithdrawalTransaction();
 
 
