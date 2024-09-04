@@ -29,6 +29,9 @@ import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransaction;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionResponse;
 import com.restapi.rizqnasionalwebsite.service.AdminService;
 import com.restapi.rizqnasionalwebsite.service.StatementService;
 import com.restapi.rizqnasionalwebsite.service.UserService;
@@ -263,7 +266,7 @@ public class StatementController {
         }
     }
 
-    @GetMapping("/withdrawal/{id}")
+    @GetMapping("v1/withdrawal/{id}")
     public ResponseEntity<?> getHistoryWithdrawal(@PathVariable String id){
         try {
         //   User user = userService.getUserByIdentityNumber(id);
@@ -278,5 +281,87 @@ public class StatementController {
           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
       }
     }
+
+
+    //show list withdrawal trans --user
+    @GetMapping("/withdrawal/{id}")
+    public ResponseEntity<?> showListHistoryTransaction(@PathVariable String id){
+        try {
+        //   User user = userService.getUserByIdentityNumber(id);
+        //   if (user == null){
+        //       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new CommonResponse<>(true,"Invalid identity number",null));
+        //   }
+          
+          List<WithdrawalTransaction> listWithdrawal = statementService.showWithdrawalTransaction(id);
+          return ResponseEntity.ok(new CommonResponse<>(false, "success", listWithdrawal));
+      } catch (Exception e) {
+          e.printStackTrace(); 
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+      }
+    }
+
+    //show list withdrawal trans --bo
+    @GetMapping("/list-withdrawal")
+    public ResponseEntity<?> showUserListHistoryTransaction(){
+        try {
+          List<WithdrawalTransactionResponse> listWithdrawal = statementService.showUserWithdrawalTransaction();
+          return ResponseEntity.ok(new CommonResponse<>(false, "success", listWithdrawal));
+      } catch (Exception e) {
+          e.printStackTrace(); 
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+      }
+    }
+
+    @PutMapping("/update-status-withdrawal")
+    public ResponseEntity<?> updateStatusWithdrawal(@RequestBody WithdrawalTransactionRequest wRequest){
+         try {
+            statementService.updateWithdrawalTransaction(wRequest);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Updare status success", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    @PostMapping("/add-withdrawal")
+    public ResponseEntity<?> addWithdrawal(@RequestBody WithdrawalTransaction wTransaction){
+        try {
+            // int lenStatement = statementService.getAllStatement().size()+1;
+            String idSt = "WT-" + UUID.randomUUID();
+            wTransaction.setId(idSt);
+            statementService.addWithdrawalTransaction(wTransaction);
+
+            // String idHistoryStatement = "HS-" + UUID.randomUUID();
+            
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            wTransaction.setDate(dateNow);
+            
+            statementService.addWithdrawalTransaction(wTransaction);
+            
+
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "Statement added",null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
+    
     
 }

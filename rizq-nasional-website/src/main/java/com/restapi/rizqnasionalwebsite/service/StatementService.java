@@ -13,6 +13,9 @@ import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransaction;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionResponse;
 import com.restapi.rizqnasionalwebsite.mapper.StatementMapper;
 
 @Service
@@ -87,4 +90,26 @@ public class StatementService {
     public List<HistoryWithdrawal> getHistoryWithdrawals (String userId){
         return statementMapper.getHistoryWithdrawal(userId);
     }
+
+    //withdrawal transaction
+    //for bo
+    public List<WithdrawalTransactionResponse> showUserWithdrawalTransaction(){
+        return statementMapper.showUserWithdrawalTransaction();
+    }
+
+    //add withdrawal
+    public void addWithdrawalTransaction(WithdrawalTransaction withdrawalTransaction){
+        statementMapper.addWithdrawalTransaction(withdrawalTransaction);
+    }
+
+    //update withdrawal
+    public void updateWithdrawalTransaction(WithdrawalTransactionRequest request){
+        statementMapper.updateStatusWithdrawal(request); 
+    }
+
+    //for user
+    public List<WithdrawalTransaction> showWithdrawalTransaction(String userId){
+        return statementMapper.showWithdrawalTransaction(userId);
+    }
+
 }

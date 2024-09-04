@@ -16,6 +16,9 @@ import com.restapi.rizqnasionalwebsite.entity.Investment;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.UserICChangeRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransaction;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionRequest;
+import com.restapi.rizqnasionalwebsite.entity.WithdrawalTransactionResponse;
 
 @Mapper
 public interface StatementMapper {
@@ -102,5 +105,23 @@ public interface StatementMapper {
 
     @Select("SELECT * FROM history_withdrawal WHERE userId = #{userId}")
     List<HistoryWithdrawal> getHistoryWithdrawal(String userId);
+
+    //for withdrawal transaction
+    //-- for bo to insert amount withdrawal -- insert
+    @Insert("INSERT INTO withdrawal_transaction(id, userId, date, bankName, bankAccount, amount, status) VALUES(#{id}, #{userId}, #{date}, #{bankName}, #{bankAccount}, #{amount}, #{status})")
+    void addWithdrawalTransaction(WithdrawalTransaction wTransaction);
+
+    //-- for bo to update status withdrawal -- update
+    @Update("UPDATE withdrawal_transaction SET status = #{status} WHERE userId = #{userId}")
+    void updateStatusWithdrawal(WithdrawalTransactionRequest req);
+
+    //-- for user to show the withdrawal transaction list -- select
+    @Select("SELECT * FROM withdrawal_transaction WHERE userId = #{userId}")
+    List<WithdrawalTransaction> showWithdrawalTransaction (String userId);
+
+    //for bo to show list withdrawal transaction
+    @Select("SELECT u.fullName, wt.userId, wt.amount, wt.date, wt.status FROM withdrawal_transaction wt LEFT JOIN users u WHERE u.identityNumber = wt.userId")
+    List<WithdrawalTransactionResponse> showUserWithdrawalTransaction();
+
 
 }
