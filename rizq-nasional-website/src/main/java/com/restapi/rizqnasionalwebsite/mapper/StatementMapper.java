@@ -123,5 +123,8 @@ public interface StatementMapper {
     @Select("SELECT wt.id, u.fullName, wt.userId, wt.amount, wt.date, wt.status FROM withdrawal_transaction wt LEFT JOIN users u ON u.identityNumber = wt.userId")
     List<WithdrawalTransactionResponse> showUserWithdrawalTransaction();
 
+    //for bo to delete withdrawal transaction
+    @Delete("DELETE FROM withdrawal_transaction WHERE id = #{id}")
+    void deleteWithdrawalTransaction(String id);
 
 }

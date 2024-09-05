@@ -107,6 +107,11 @@ public class StatementService {
         statementMapper.updateStatusWithdrawal(request); 
     }
 
+    //delete withdrawal
+    public void deleteWithdrawalTransaction(String id){
+        statementMapper.deleteWithdrawalTransaction(id);
+    }
+
     //for user
     public List<WithdrawalTransaction> showWithdrawalTransaction(String userId){
         return statementMapper.showWithdrawalTransaction(userId);

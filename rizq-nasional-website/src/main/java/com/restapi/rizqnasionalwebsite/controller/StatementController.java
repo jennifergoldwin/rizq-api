@@ -361,6 +361,19 @@ public class StatementController {
         }
     }
 
+    @DeleteMapping("/delete-withdrawal/{wId}")
+    public ResponseEntity<?> deleteWithdrawalTransaction (@PathVariable String wId){
+        try {
+            statementService.deleteWithdrawalTransaction(wId);
+            return ResponseEntity.status(HttpStatus.OK)
+            .body(new CommonResponse<>(false, "Transaction deleted", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     
     
 }
