@@ -334,20 +334,20 @@ public class StatementController {
 
             // String idHistoryStatement = "HS-" + UUID.randomUUID();
             
-            LocalDateTime currentTime = LocalDateTime.now();
+            // LocalDateTime currentTime = LocalDateTime.now();
 
             // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
-            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+            // ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
 
             // Convert the current time to the Malaysia timezone
-            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
-                                                .withZoneSameInstant(malaysiaZone)
-                                                .toLocalDateTime();
+            // LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+            //                                     .withZoneSameInstant(malaysiaZone)
+            //                                     .toLocalDateTime();
 
             // Format the result if needed
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String dateNow = malaysiaTime.format(formatter);
-            wTransaction.setDate(dateNow);
+            // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            // String dateNow = malaysiaTime.format(formatter);
+            // wTransaction.setDate(dateNow);
             
             statementService.addWithdrawalTransaction(wTransaction);
             
