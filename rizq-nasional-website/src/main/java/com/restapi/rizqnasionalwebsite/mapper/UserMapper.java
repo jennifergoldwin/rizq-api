@@ -128,5 +128,6 @@ public interface UserMapper {
     LEFT JOIN plan p ON p.id = r.pakejId
     """)
     List<ReceiptResponse> getListReceipt();
+    
 
 }
