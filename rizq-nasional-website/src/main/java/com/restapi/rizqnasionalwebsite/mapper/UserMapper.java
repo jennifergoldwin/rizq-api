@@ -110,9 +110,10 @@ public interface UserMapper {
     @Delete("DELETE FROM users WHERE identityNumber = #{id}")
     void delete(String id);
 
-    @Insert("INSERT INTO receipt(id, pakejId, userId, uploadedFile, uploadedDate) "+
-    "VALUES(#{id}, #{pakejId}, #{userId}, #{uploadedFile}, #{uploadedDate}")
+    @Insert("INSERT INTO receipt(id, pakejId, userId, uploadedFile, uploadedDate) " +
+        "VALUES(#{id}, #{pakejId}, #{userId}, #{uploadedFile}, #{uploadedDate})")
     void addReceipt(Receipt receipt);
+
 
     @Select("SELECT r.id, p.namaPakej, u.userId,u.fullName, FROM receipt r LEFT JOIN user u LEFT JOIN plan p where u.userId = r.userId, p.id = r.pakejId")
     List<Receipt> getListReceipt();

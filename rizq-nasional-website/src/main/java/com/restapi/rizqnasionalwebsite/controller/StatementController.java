@@ -53,7 +53,7 @@ public class StatementController {
     @Autowired
     private AdminService adminService;
 
-     @PostMapping("/upload-receipt")
+    @PostMapping("/upload-receipt")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("pakejId") String pakejId, @RequestParam("userId") String userId) {
       System.out.println("Received file: " + file.getOriginalFilename());
         try {

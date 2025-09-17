@@ -24,7 +24,7 @@ public class PlanService {
     }
 
     public Plan addPlan(Plan plan) {
-        String id = "PL"  + UUID.randomUUID();
+        String id = "PL-"  + UUID.randomUUID();
         plan.setId(id);
         planMapper.save(plan);
         return plan;
