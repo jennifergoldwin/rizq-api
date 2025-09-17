@@ -124,7 +124,7 @@ public interface UserMapper {
         r.uploadedFile,
         r.uploadedDate
     FROM receipt r
-    LEFT JOIN users u ON u.id = r.userId
+    LEFT JOIN users u ON u.identityNumber = r.userId
     LEFT JOIN plan p ON p.id = r.pakejId
     """)
     List<ReceiptResponse> getListReceipt();
