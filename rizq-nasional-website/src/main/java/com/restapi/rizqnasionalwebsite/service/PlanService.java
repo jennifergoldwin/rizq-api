@@ -1,6 +1,7 @@
 package com.restapi.rizqnasionalwebsite.service;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,8 @@ public class PlanService {
     }
 
     public Plan addPlan(Plan plan) {
+        String id = "PL"  + UUID.randomUUID();
+        plan.setId(id);
         planMapper.save(plan);
         return plan;
     }

@@ -19,7 +19,7 @@ public interface PlanMapper {
     @Select("SELECT * FROM plan")
     List<Plan> getAllPlan();
 
-    @Insert("INSERT INTO plan(id, planType, interest, tenure, price) VALUES(#{id}, #{planType}, #{interest}, #{tenure}, #{price})")
+    @Insert("INSERT INTO plan(id, namaPakej, modal, pulangan) VALUES(#{id}, #{namaPakej}, #{modal}, #{pulangan})")
     void save(Plan plan);
 
     @Delete("DELETE FROM plan WHERE id = #{id}")

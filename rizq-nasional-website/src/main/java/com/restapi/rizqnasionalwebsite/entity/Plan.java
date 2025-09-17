@@ -9,8 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Plan {
     private String id;
-    private String planType;
-    private double interest;
-    private int tenure;
-    private int price;
+    private String namaPakej;
+    private int modal;
+    private int pulangan;
 }
