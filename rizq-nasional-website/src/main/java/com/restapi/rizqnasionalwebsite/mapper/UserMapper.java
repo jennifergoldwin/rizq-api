@@ -14,6 +14,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.Receipt;
+import com.restapi.rizqnasionalwebsite.entity.ReceiptResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 
@@ -115,6 +116,17 @@ public interface UserMapper {
     void addReceipt(Receipt receipt);
 
 
-    @Select("SELECT r.id, p.namaPakej, u.userId,u.fullName, FROM receipt r LEFT JOIN user u LEFT JOIN plan p where u.userId = r.userId, p.id = r.pakejId")
-    List<Receipt> getListReceipt();
+    @Select("""
+    SELECT 
+        r.id,
+        p.namaPakej,
+        u.fullName,
+        r.uploadedFile,
+        r.uploadedDate
+    FROM receipt r
+    LEFT JOIN user u ON u.id = r.userId
+    LEFT JOIN plan p ON p.id = r.pakejId
+    """)
+    List<ReceiptResponse> getListReceipt();
+
 }

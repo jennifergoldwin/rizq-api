@@ -14,7 +14,9 @@ import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.AuthUserDetails;
 import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
+import com.restapi.rizqnasionalwebsite.entity.Plan;
 import com.restapi.rizqnasionalwebsite.entity.Receipt;
+import com.restapi.rizqnasionalwebsite.entity.ReceiptResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 import com.restapi.rizqnasionalwebsite.mapper.AdminMapper;
@@ -89,6 +91,10 @@ public class UserService implements UserDetailsService {
     }
     public void addReceipt(Receipt receipt){
         userMapper.addReceipt(receipt);
+    }
+
+    public List<ReceiptResponse> getListReceipt(){
+        return userMapper.getListReceipt();
     }
 
 } 

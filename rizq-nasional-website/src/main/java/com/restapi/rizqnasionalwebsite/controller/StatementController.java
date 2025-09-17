@@ -53,6 +53,17 @@ public class StatementController {
     @Autowired
     private AdminService adminService;
 
+    @GetMapping("/all-receipt")
+    public ResponseEntity<?> getAllPlan(){
+         try {           
+            return ResponseEntity.ok(new CommonResponse<>
+            (false, "success", userService.getListReceipt()));
+        } catch (Exception e) {
+            e.printStackTrace(); 
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
+
     @PostMapping("/upload-receipt")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("pakejId") String pakejId, @RequestParam("userId") String userId) {
       System.out.println("Received file: " + file.getOriginalFilename());
