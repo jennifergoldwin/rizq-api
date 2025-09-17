@@ -13,6 +13,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.restapi.rizqnasionalwebsite.entity.EditUserRequest;
+import com.restapi.rizqnasionalwebsite.entity.Receipt;
 import com.restapi.rizqnasionalwebsite.entity.User;
 import com.restapi.rizqnasionalwebsite.entity.UserInfoAdmin;
 
@@ -108,4 +109,11 @@ public interface UserMapper {
 
     @Delete("DELETE FROM users WHERE identityNumber = #{id}")
     void delete(String id);
+
+    @Insert("INSERT INTO receipt(id, pakejId, userId, uploadedFile, uploadedDate) "+
+    "VALUES(#{id}, #{pakejId}, #{userId}, #{uploadedFile}, #{uploadedDate}")
+    void addReceipt(Receipt receipt);
+
+    @Select("SELECT r.id, p.namaPakej, u.userId,u.fullName, FROM receipt r LEFT JOIN user u LEFT JOIN plan p where u.userId = r.userId, p.id = r.pakejId")
+    List<Receipt> getListReceipt();
 }

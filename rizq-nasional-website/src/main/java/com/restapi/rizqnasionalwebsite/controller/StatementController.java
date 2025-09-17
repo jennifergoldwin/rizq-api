@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.restapi.rizqnasionalwebsite.entity.Admin;
 import com.restapi.rizqnasionalwebsite.entity.CommonResponse;
@@ -25,6 +26,7 @@ import com.restapi.rizqnasionalwebsite.entity.HistoryDeposit;
 import com.restapi.rizqnasionalwebsite.entity.HistoryStatement;
 import com.restapi.rizqnasionalwebsite.entity.HistoryWithdrawal;
 import com.restapi.rizqnasionalwebsite.entity.Investment;
+import com.restapi.rizqnasionalwebsite.entity.Receipt;
 import com.restapi.rizqnasionalwebsite.entity.Statement;
 import com.restapi.rizqnasionalwebsite.entity.StatementResponse;
 import com.restapi.rizqnasionalwebsite.entity.User;
@@ -50,6 +52,37 @@ public class StatementController {
 
     @Autowired
     private AdminService adminService;
+
+     @PostMapping("/upload-receipt")
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file,@RequestParam("pakejId") String pakejId, @RequestParam("userId") String userId) {
+      System.out.println("Received file: " + file.getOriginalFilename());
+        try {
+            LocalDateTime currentTime = LocalDateTime.now();
+
+            // Specify the timezone (Asia/Kuala_Lumpur for Malaysia)
+            ZoneId malaysiaZone = ZoneId.of("Asia/Kuala_Lumpur");
+
+            // Convert the current time to the Malaysia timezone
+            LocalDateTime malaysiaTime = currentTime.atZone(ZoneId.systemDefault())
+                                                .withZoneSameInstant(malaysiaZone)
+                                                .toLocalDateTime();
+
+            // Format the result if needed
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String dateNow = malaysiaTime.format(formatter);
+            String idrc =  "RC-" + UUID.randomUUID();
+            byte[] fileContent = file.getBytes();
+            Receipt receipt = new Receipt(idrc,pakejId,userId,fileContent,dateNow);
+           
+            userService.addReceipt(receipt);
+            return ResponseEntity.status(HttpStatus.CREATED)
+            .body(new CommonResponse<>(false, "File uploaded", null));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new CommonResponse<>(true, e.getLocalizedMessage(), null));
+        }
+    }
 
     @GetMapping("/statement-user/{id}")
     public ResponseEntity<?> getStatementUser(@PathVariable String id) {
