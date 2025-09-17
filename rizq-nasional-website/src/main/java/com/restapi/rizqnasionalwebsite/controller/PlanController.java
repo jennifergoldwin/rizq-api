@@ -35,11 +35,11 @@ public class PlanController {
     public ResponseEntity<?> addStock(@RequestBody Plan plan) {
         try {
             // Check if the user with the provided identityNumber already exists
-            Plan existingPlan = planService.getPlanById(plan.getId());
-            if (existingPlan != null) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                        .body(new CommonResponse<>(true, "Plan id already exists", null));
-            }
+            // Plan existingPlan = planService.getPlanById(plan.getId());
+            // if (existingPlan != null) {
+            //     return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            //             .body(new CommonResponse<>(true, "Plan id already exists", null));
+            // }
             return ResponseEntity.status(HttpStatus.CREATED)
             .body(new CommonResponse<>(false, "Plan added", planService.addPlan(plan)));
         } catch (Exception e) {
